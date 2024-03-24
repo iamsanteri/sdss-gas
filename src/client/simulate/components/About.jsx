@@ -13,7 +13,7 @@ const About = () => (
       target="_blank"
       rel="noopener noreferrer"
     >
-      React + Google Apps Script
+      Still running?
     </a>
   </div>
 );
