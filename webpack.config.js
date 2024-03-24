@@ -71,10 +71,10 @@ const clientEntrypoints = [
     template: './src/client/dialog-demo-tailwindcss/index.html',
   },
   {
-    name: 'CLIENT - Sidebar About Page',
-    entry: './src/client/sidebar-about-page/index.js',
-    filename: 'sidebar-about-page',
-    template: './src/client/sidebar-about-page/index.html',
+    name: 'CLIENT - Simulate',
+    entry: './src/client/simulate/index.js',
+    filename: 'simulate',
+    template: './src/client/simulate/index.html',
   },
 ];
 

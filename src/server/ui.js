@@ -1,11 +1,11 @@
 export const onOpen = () => {
   const menu = SpreadsheetApp.getUi()
-    .createMenu('My Sample React Project') // edit me!
+    .createMenu('Simulate DSS') // edit me!
     .addItem('Sheet Editor', 'openDialog')
     .addItem('Sheet Editor (Bootstrap)', 'openDialogBootstrap')
     .addItem('Sheet Editor (MUI)', 'openDialogMUI')
     .addItem('Sheet Editor (Tailwind CSS)', 'openDialogTailwindCSS')
-    .addItem('About me', 'openAboutSidebar');
+    .addItem('Simulate', 'openSimulate');
 
   menu.addToUi();
 };
@@ -38,7 +38,8 @@ export const openDialogTailwindCSS = () => {
   SpreadsheetApp.getUi().showModalDialog(html, 'Sheet Editor (Tailwind CSS)');
 };
 
-export const openAboutSidebar = () => {
-  const html = HtmlService.createHtmlOutputFromFile('sidebar-about-page');
+export const openSimulate = () => {
+  const html =
+    HtmlService.createHtmlOutputFromFile('simulate').setTitle('Simulate DSS');
   SpreadsheetApp.getUi().showSidebar(html);
 };

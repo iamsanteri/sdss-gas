@@ -20,6 +20,10 @@
 
 ---
 
+## Increase Node heap size
+
+```export NODE_OPTIONS="--max-old-space-size=8192"```
+
 ## 📝 Table of Contents
 
 - [About](#about)
