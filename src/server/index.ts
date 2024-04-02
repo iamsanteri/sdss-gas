@@ -10,7 +10,7 @@ import {
 import { getSheetsData, addSheet, deleteSheet, setActiveSheet } from './sheets';
 
 // IMPORT YOUR SERVER-SIDE LOGIC HERE - REMEMBER TO ALSO EXPORT BELOW
-import { testSimulate  } from './simulate';
+import { saveSimData, loadSimData  } from './simulate';
 import { getSelectedCell, setCellColor, clearCellColor } from './cells';
 
 // Public functions must be exported as named exports
@@ -25,7 +25,8 @@ export {
   addSheet,
   deleteSheet,
   setActiveSheet,
-  testSimulate,
+  saveSimData,
+  loadSimData,
   getSelectedCell,
   setCellColor,
   clearCellColor

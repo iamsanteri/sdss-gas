@@ -1,10 +1,13 @@
-export const testSimulate = () => {
-  // eslint-disable-next-line no-console
-  console.log('Helloooooooooooo!');
+export const saveSimData = (inputs) => {
+  const documentProperties = PropertiesService.getDocumentProperties();
+  documentProperties.setProperty('simData', JSON.stringify(inputs));
 };
 
-export const otherFunction = () => {
-  return null;
+export const loadSimData = () => {
+  const documentProperties = PropertiesService.getDocumentProperties();
+  // documentProperties.deleteAllProperties(); USE THIS TO DELETE ALL PROPERTIES IN DEV IF NEEDED
+  const savedSimData = documentProperties.getProperty('simData');
+  return savedSimData ? JSON.parse(savedSimData) : [];
 };
 
 /* IMPORTED SIMULATION BASED CODE */

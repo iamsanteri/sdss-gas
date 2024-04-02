@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const InputPane = ({ onHide, onAccept }) => {
-  const [selectedCell, setSelectedCell] = useState('Reading cell...');
+  const defaultCellValue = 'Getting...';
+  const [selectedCell, setSelectedCell] = useState(defaultCellValue);
+  const [loadingState, setLoadingState] = useState(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -28,23 +31,26 @@ const InputPane = ({ onHide, onAccept }) => {
   const acceptInput = () => {
     serverFunctions.setCellColor(selectedCell);
     onAccept(selectedCell);
+    setLoadingState(true);
   };
 
   return (
     <div>
-      <p>Selected cell: {selectedCell}</p>
-      <Button
+      <p>Selection: {selectedCell}</p>
+      <LoadingButton
         variant="text"
         color="success"
         size="small"
         disableElevation
         onClick={acceptInput}
+        disabled={selectedCell === defaultCellValue}
+        loading={loadingState}
       >
         Accept
-      </Button>
+      </LoadingButton>
       <Button
         variant="text"
-        color="success"
+        color="error"
         size="small"
         disableElevation
         onClick={onHide}
