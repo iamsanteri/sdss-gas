@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const InputPane = ({ onHide, onAccept }) => {
-  const [selectedCell, setSelectedCell] = useState('A1');
+  const [selectedCell, setSelectedCell] = useState('Reading cell...');
 
   useEffect(() => {
     const intervalId = setInterval(() => {
