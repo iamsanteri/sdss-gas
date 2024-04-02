@@ -3,10 +3,10 @@ html * {
    font-size: 0.9rem;
 }
 
-button {
+button .create-input {
     background-color: #43A047 !important;
 }
 
-button:hover {
+button .create-input:hover {
     background-color: #38853B !important;
 }
