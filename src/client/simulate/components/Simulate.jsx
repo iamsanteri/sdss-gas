@@ -22,10 +22,10 @@ import { serverFunctions } from '../../utils/serverFunctions';
 const Simulate = () => {
   const [isInputPaneVisible, setInputPaneVisible] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
-  const [inputs, setInputs] = useState([]);
+  const [appState, setAppState] = useState([]);
 
   useEffect(() => {
-    serverFunctions.loadSimData().then(setInputs);
+    serverFunctions.loadSimData().then(setAppState);
   }, []);
 
   const showInputPane = () => {
@@ -36,55 +36,62 @@ const Simulate = () => {
     setInputPaneVisible(false);
   };
 
-  const acceptInput = (input) => {
-    const newInputs = [...inputs, input];
-    if (input.cellA1Notation) {
+  const acceptVariable = (cellNotation) => {
+    const newVariable = {
+      // See application state schema in state.js
+      [cellNotation]: {
+        timestamp: new Date().toISOString(),
+      },
+    };
+    const newAppState = [...appState, newVariable];
+    const cellA1Notation = Object.keys(newVariable)[0];
+
+    if (cellA1Notation) {
       serverFunctions
-        .setCellColor(input.cellA1Notation, 'yellow')
-        .then(() => serverFunctions.saveSimData(newInputs))
+        .setCellColor(cellA1Notation, 'yellow')
+        .then(() => serverFunctions.saveSimData(newAppState))
         .then(() => {
-          setInputs(newInputs);
+          setAppState(newAppState);
         });
     } else {
-      serverFunctions.saveSimData(newInputs).then(() => {
-        setInputs(newInputs);
+      serverFunctions.saveSimData(newAppState).then(() => {
+        setAppState(newAppState);
       });
     }
     // Delay hiding the input pane by 1,5 seconds
     setTimeout(hideInputPane, 1500);
   };
 
-  const deleteInput = (index) => {
+  const deleteVariable = (cellNotation) => {
     setLoadingDeleteState(true);
-    try {
-      const cellA1Notation = inputs[index];
-      const newInputs = inputs.filter((_, i) => i !== index);
+    const newAppState = appState.filter(
+      (variable) => !(cellNotation in variable)
+    );
 
-      serverFunctions
-        .clearCellColor(cellA1Notation)
-        .then(() => {
-          serverFunctions
-            .saveSimData(newInputs)
-            .then(() => {
-              setInputs(newInputs);
-              setLoadingDeleteState(false);
-            })
-            .catch((error) => {
-              console.error('Error saving sim data:', error);
-            });
-        })
-        .catch((error) => {
-          console.error('Error clearing cell color:', error);
-        });
-    } catch (error) {
-      console.error('Error in deleteInput:', error);
-    }
+    serverFunctions
+      .clearCellColor(cellNotation)
+      .then(() => {
+        serverFunctions
+          .saveSimData(newAppState)
+          .then(() => {
+            setAppState(newAppState);
+            setLoadingDeleteState(false);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line no-console
+            console.error('Error saving sim data:', error);
+          });
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Error clearing cell color:', error);
+      });
   };
 
   return (
     <div>
       {isInputPaneVisible ? (
-        <InputPane onHide={hideInputPane} onAccept={acceptInput} />
+        <InputPane onHide={hideInputPane} onAccept={acceptVariable} />
       ) : (
         <Button
           variant="contained"
@@ -115,20 +122,26 @@ const Simulate = () => {
         )}
       </Box>
       <List>
-        {inputs.map((input, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={input} />
-            <ListItemSecondaryAction>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => deleteInput(index)}
-              >
-                <Delete />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
+        {appState.map((item, index) => {
+          const cellNotation = Object.keys(item)[0];
+          return (
+            <ListItem key={index}>
+              <ListItemText
+                primary={cellNotation}
+                secondary={`Timestamp: ${item[cellNotation].timestamp}`}
+              />
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => deleteVariable(cellNotation)}
+                >
+                  <Delete />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
       </List>
     </div>
   );

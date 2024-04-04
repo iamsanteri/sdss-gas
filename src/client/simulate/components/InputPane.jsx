@@ -18,6 +18,7 @@ const InputPane = ({ onHide, onAccept }) => {
           setSelectedCell(cell);
         })
         .catch((error) => {
+          // eslint-disable-next-line no-console
           console.log('Failed to get selected cell: ', error);
         });
     }, 1000); // Poll every 1 second
