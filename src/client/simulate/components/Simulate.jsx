@@ -59,7 +59,7 @@ const Simulate = () => {
       });
     }
     // Delay hiding the input pane by 1,5 seconds
-    setTimeout(hideInputPane, 1500);
+    setTimeout(hideInputPane, 2000);
   };
 
   const deleteVariable = (cellNotation) => {
