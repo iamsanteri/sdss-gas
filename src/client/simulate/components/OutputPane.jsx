@@ -46,7 +46,6 @@ const OutputPane = ({ onHide, onAccept }) => {
 
     // If there's no error, clear the error message, set the cell color, and accept the output
     setErrorMessage('');
-    serverFunctions.setCellColor(selectedCell);
     onAccept(selectedCell, 'output', {});
     setLoadingState(false); // Stop loading
   };

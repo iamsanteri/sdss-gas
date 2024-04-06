@@ -6,13 +6,13 @@ export const getSelectedCell = () => {
   return activeCell.getA1Notation();
 };
 
-export const setCellColor = (cellA1Notation, color) => {
+export const setCellNote = (cellA1Notation, note) => {
   return new Promise((resolve, reject) => {
     try {
       const activeSheet =
         SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
       const cell = activeSheet.getRange(cellA1Notation);
-      cell.setBackground(color);
+      cell.setNote(note);
       SpreadsheetApp.flush();
       resolve();
     } catch (error) {
@@ -21,13 +21,13 @@ export const setCellColor = (cellA1Notation, color) => {
   });
 };
 
-export const clearCellColor = (cellA1Notation) => {
+export const clearCellNote = (cellA1Notation) => {
   return new Promise((resolve, reject) => {
     try {
       const activeSheet =
         SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
       const cell = activeSheet.getRange(cellA1Notation);
-      cell.setBackground(null);
+      cell.clearNote();
       SpreadsheetApp.flush();
       resolve();
     } catch (error) {

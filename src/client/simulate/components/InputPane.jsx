@@ -52,7 +52,6 @@ const InputPane = ({ onHide, onAccept }) => {
 
     const additionalData = { min: min || '', max: max || '' };
 
-    serverFunctions.setCellColor(selectedCell);
     onAccept(selectedCell, 'input', additionalData);
     setLoadingState(true);
   };

@@ -51,10 +51,10 @@ const Main = () => {
         },
       };
       const cellA1Notation = Object.keys(newVariable)[0];
-      const color = varType === 'input' ? 'yellow' : '#90EE90';
+      const note = varType === 'input' ? 'Input variable' : 'Output variable';
 
       serverFunctions
-        .setCellColor(cellA1Notation, color)
+        .setCellNote(cellA1Notation, note)
         .then(() => {
           setAppState((prevState) => {
             const newAppState = [...prevState, newVariable];
@@ -77,7 +77,7 @@ const Main = () => {
     setLoadingDeleteState(true);
 
     serverFunctions
-      .clearCellColor(cellNotation)
+      .clearCellNote(cellNotation)
       .then(() => {
         setAppState((prevState) => {
           const newAppState = prevState.filter(
