@@ -11,7 +11,7 @@ import { getSheetsData, addSheet, deleteSheet, setActiveSheet } from './sheets';
 
 // IMPORT YOUR SERVER-SIDE LOGIC HERE - REMEMBER TO ALSO EXPORT BELOW
 import { saveSimData, loadSimData  } from './state';
-import { getSelectedCell, setCellColor, clearCellColor } from './cells';
+import { getSelectedCell, setCellColor, clearCellColor, getCellFormula } from './cells';
 
 // Public functions must be exported as named exports
 export {
@@ -29,5 +29,6 @@ export {
   loadSimData,
   getSelectedCell,
   setCellColor,
-  clearCellColor
+  clearCellColor,
+  getCellFormula
 };

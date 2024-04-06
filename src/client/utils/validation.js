@@ -1,5 +1,3 @@
-// validation.js
-
 // eslint-disable-next-line import/prefer-default-export
 export const validateInput = (min, max) => {
   let errorMessage = '';

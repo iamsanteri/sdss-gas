@@ -13,85 +13,108 @@ import {
 import { Add, Delete } from '@mui/icons-material';
 
 import InputPane from './InputPane';
+import OutputPane from './OutputPane';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const Main = () => {
-  const [isInputPaneVisible, setInputPaneVisible] = useState(false);
+  const [activePane, setActivePane] = useState(null);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
   const [appState, setAppState] = useState([]);
 
-  useEffect(() => {
-    serverFunctions.loadSimData().then(setAppState);
-  }, []);
+  const inputVariables = appState.filter(
+    (item) => item[Object.keys(item)[0]].type === 'input'
+  );
+  const outputVariables = appState.filter(
+    (item) => item[Object.keys(item)[0]].type === 'output'
+  );
 
   const showInputPane = () => {
-    setInputPaneVisible(true);
+    setActivePane('input');
   };
 
-  const hideInputPane = () => {
-    setInputPaneVisible(false);
+  const showOutputPane = () => {
+    setActivePane('output');
+  };
+
+  const hidePane = () => {
+    setActivePane(null);
   };
 
   const acceptVariable = (cellNotation, varType, additionalDataObj) => {
-    const newVariable = {
-      // See application state schema in state.js
-      [cellNotation]: {
-        timestamp: new Date().toISOString(),
-        type: varType,
-        additionalData: additionalDataObj,
-      },
-    };
-    const newAppState = [...appState, newVariable];
-    const cellA1Notation = Object.keys(newVariable)[0];
+    return new Promise((resolve, reject) => {
+      const newVariable = {
+        [cellNotation]: {
+          timestamp: new Date().toISOString(),
+          type: varType,
+          additionalData: additionalDataObj,
+        },
+      };
+      const cellA1Notation = Object.keys(newVariable)[0];
+      const color = varType === 'input' ? 'yellow' : '#90EE90';
 
-    if (cellA1Notation) {
       serverFunctions
-        .setCellColor(cellA1Notation, 'yellow')
-        .then(() => serverFunctions.saveSimData(newAppState))
+        .setCellColor(cellA1Notation, color)
         .then(() => {
-          setAppState(newAppState);
+          setAppState((prevState) => {
+            const newAppState = [...prevState, newVariable];
+            serverFunctions.saveSimData(newAppState); // Use the updated state directly
+            return newAppState;
+          });
+        })
+        .then(() => {
+          hidePane();
+          resolve();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          reject(error);
         });
-    } else {
-      serverFunctions.saveSimData(newAppState).then(() => {
-        setAppState(newAppState);
-      });
-    }
-    // Delay hiding the input pane by 2 seconds
-    setTimeout(hideInputPane, 2000);
+    });
   };
 
   const deleteVariable = (cellNotation) => {
     setLoadingDeleteState(true);
-    const newAppState = appState.filter(
-      (variable) => !(cellNotation in variable)
-    );
 
     serverFunctions
       .clearCellColor(cellNotation)
       .then(() => {
-        serverFunctions
-          .saveSimData(newAppState)
-          .then(() => {
-            setAppState(newAppState);
-            setLoadingDeleteState(false);
-          })
-          .catch((error) => {
-            // eslint-disable-next-line no-console
-            console.error('Error saving sim data:', error);
-          });
+        setAppState((prevState) => {
+          const newAppState = prevState.filter(
+            (variable) => !(cellNotation in variable)
+          );
+          serverFunctions.saveSimData(newAppState); // Use the updated state directly
+          return newAppState;
+        });
+      })
+      .then(() => {
+        setLoadingDeleteState(false);
       })
       .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error('Error clearing cell color:', error);
+        console.error('Error:', error);
       });
   };
 
+  useEffect(() => {
+    serverFunctions.loadSimData().then((data) => {
+      setAppState(data);
+    });
+  }, []);
+
   return (
     <div>
-      {isInputPaneVisible ? (
-        <InputPane onHide={hideInputPane} onAccept={acceptVariable} />
-      ) : (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width="100%"
+        minHeight="24px"
+        mt={2}
+        mb={2}
+      >
+        {loadingDeleteState && <CircularProgress color="success" size={20} />}
+      </Box>
+      {activePane !== 'input' && (
         <Button
           variant="contained"
           color="success"
@@ -104,37 +127,81 @@ const Main = () => {
           Create input
         </Button>
       )}
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        width="100%"
-        minHeight="24px"
-        mt={3} // Set a minimum height
-        mb={-2} // Set a negative margin to overlap the list
-      >
-        {loadingDeleteState && (
-          <CircularProgress
-            color="success"
-            size={20} // Adjust the size here
-          />
-        )}
-      </Box>
+      {activePane === 'input' && (
+        <InputPane onHide={hidePane} onAccept={acceptVariable} />
+      )}
       <List>
-        {appState.map((item, index) => {
+        {inputVariables.map((item, index) => {
           const cellNotation = Object.keys(item)[0];
           const uncertainData = item[cellNotation].additionalData;
           return (
             <ListItem key={index}>
               <ListItemText
                 primary={cellNotation}
-                secondary={`Timestamp: ${item[cellNotation].timestamp} - Type: ${item[cellNotation].type} - Min: ${uncertainData.min} - Max: ${uncertainData.max}`}
+                secondary={`Timestamp: ${
+                  item[cellNotation].timestamp
+                } - Type: ${item[cellNotation].type} - Additional data: ${
+                  Object.keys(uncertainData).length > 0
+                    ? Object.entries(uncertainData)
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join(', ')
+                    : 'Empty'
+                }`}
               />
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
                   aria-label="delete"
                   onClick={() => deleteVariable(cellNotation)}
+                  disabled={loadingDeleteState}
+                >
+                  <Delete />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
+      </List>
+      {activePane !== 'output' && (
+        <Button
+          variant="contained"
+          color="success"
+          loading="true"
+          size="small"
+          startIcon={<Add />}
+          disableElevation
+          onClick={() => showOutputPane()}
+        >
+          Create output
+        </Button>
+      )}
+      {activePane === 'output' && (
+        <OutputPane onHide={hidePane} onAccept={acceptVariable} />
+      )}
+      <List>
+        {outputVariables.map((item, index) => {
+          const cellNotation = Object.keys(item)[0];
+          const uncertainData = item[cellNotation].additionalData;
+          return (
+            <ListItem key={index}>
+              <ListItemText
+                primary={cellNotation}
+                secondary={`Timestamp: ${
+                  item[cellNotation].timestamp
+                } - Type: ${item[cellNotation].type} - Additional data: ${
+                  Object.keys(uncertainData).length > 0
+                    ? Object.entries(uncertainData)
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join(', ')
+                    : 'Empty'
+                }`}
+              />
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => deleteVariable(cellNotation)}
+                  disabled={loadingDeleteState}
                 >
                   <Delete />
                 </IconButton>

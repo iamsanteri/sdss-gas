@@ -1,22 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
-import { validateInput } from '../../utils/validation';
+// import { validateOutputCell } from '../../utils/validation';
 
-const InputPane = ({ onHide, onAccept }) => {
+const OutputPane = ({ onHide, onAccept }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
   const [loadingState, setLoadingState] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
-  const inputRefs = useRef({
-    min: React.createRef(),
-    max: React.createRef(),
-  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -37,43 +32,34 @@ const InputPane = ({ onHide, onAccept }) => {
     };
   }, []);
 
-  const acceptInput = (event) => {
-    event.preventDefault();
+  const acceptOutput = async () => {
+    setLoadingState(true); // Start loading
 
-    const min = inputRefs.current.min.current.value;
-    const max = inputRefs.current.max.current.value;
+    const formula = await serverFunctions.getCellFormula(selectedCell);
+    console.log(formula);
 
-    const validationError = validateInput(min, max);
-
-    if (validationError) {
-      setErrorMessage(validationError);
+    if (!formula) {
+      setErrorMessage('Selected cell must contain a formula');
+      setLoadingState(false); // Stop loading
       return;
     }
 
-    const additionalData = { min: min || '', max: max || '' };
-
+    // If there's no error, clear the error message, set the cell color, and accept the output
+    setErrorMessage('');
     serverFunctions.setCellColor(selectedCell);
-    onAccept(selectedCell, 'input', additionalData);
-    setLoadingState(true);
+    onAccept(selectedCell, 'output', {});
+    setLoadingState(false); // Stop loading
   };
 
   return (
-    <form className="valuePane" onSubmit={acceptInput}>
+    <form
+      className="valuePane"
+      onSubmit={(e) => {
+        e.preventDefault();
+        acceptOutput();
+      }}
+    >
       <p>Selection: {selectedCell}</p>
-      <TextField
-        type="number"
-        size="small"
-        label="Min Value"
-        name="min"
-        inputRef={inputRefs.current.min}
-      />
-      <TextField
-        type="number"
-        size="small"
-        label="Max Value"
-        name="max"
-        inputRef={inputRefs.current.max}
-      />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
       <LoadingButton
         variant="text"
@@ -99,9 +85,9 @@ const InputPane = ({ onHide, onAccept }) => {
   );
 };
 
-InputPane.propTypes = {
+OutputPane.propTypes = {
   onHide: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
 };
 
-export default InputPane;
+export default OutputPane;
