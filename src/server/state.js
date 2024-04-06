@@ -1,9 +1,16 @@
+// Persisted in Google Apps Script PropertiesService
 // Application state schema as updated ongoingly, it's an array of objects:
 /*
 [
   { 
-    "A1": { 
-      "timestamp": "2022-03-14T15:09:26.535Z"
+    "A1": {
+      "type": "input",
+      "timestamp": "2022-03-14T15:09:26.535Z",
+      "additionalData": {
+        "min": "1",
+        "max": "10"
+      
+      } <- Object
       // More properties...
     } 
   },

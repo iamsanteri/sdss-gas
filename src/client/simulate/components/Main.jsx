@@ -16,10 +16,7 @@ import InputPane from './InputPane';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
-// This is a wrapper for google.script.run that lets us use promises.
-// import { serverFunctions } from '../../utils/serverFunctions';
-
-const Simulate = () => {
+const Main = () => {
   const [isInputPaneVisible, setInputPaneVisible] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
   const [appState, setAppState] = useState([]);
@@ -36,11 +33,13 @@ const Simulate = () => {
     setInputPaneVisible(false);
   };
 
-  const acceptVariable = (cellNotation) => {
+  const acceptVariable = (cellNotation, varType, additionalDataObj) => {
     const newVariable = {
       // See application state schema in state.js
       [cellNotation]: {
         timestamp: new Date().toISOString(),
+        type: varType,
+        additionalData: additionalDataObj,
       },
     };
     const newAppState = [...appState, newVariable];
@@ -58,7 +57,7 @@ const Simulate = () => {
         setAppState(newAppState);
       });
     }
-    // Delay hiding the input pane by 1,5 seconds
+    // Delay hiding the input pane by 2 seconds
     setTimeout(hideInputPane, 2000);
   };
 
@@ -124,11 +123,12 @@ const Simulate = () => {
       <List>
         {appState.map((item, index) => {
           const cellNotation = Object.keys(item)[0];
+          const uncertainData = item[cellNotation].additionalData;
           return (
             <ListItem key={index}>
               <ListItemText
                 primary={cellNotation}
-                secondary={`Timestamp: ${item[cellNotation].timestamp}`}
+                secondary={`Timestamp: ${item[cellNotation].timestamp} - Type: ${item[cellNotation].type} - Min: ${uncertainData.min} - Max: ${uncertainData.max}`}
               />
               <ListItemSecondaryAction>
                 <IconButton
@@ -147,4 +147,4 @@ const Simulate = () => {
   );
 };
 
-export default Simulate;
+export default Main;

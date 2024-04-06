@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
+import { validateInput } from '../../utils/validation';
+
 const InputPane = ({ onHide, onAccept }) => {
-  const defaultCellValue = 'Getting...';
+  const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
   const [loadingState, setLoadingState] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // New state variable for error message
+
+  const inputRefs = useRef({
+    min: React.createRef(),
+    max: React.createRef(),
+  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -29,21 +37,51 @@ const InputPane = ({ onHide, onAccept }) => {
     };
   }, []);
 
-  const acceptInput = () => {
+  const acceptInput = (event) => {
+    event.preventDefault();
+
+    const min = inputRefs.current.min.current.value;
+    const max = inputRefs.current.max.current.value;
+
+    const validationError = validateInput(min, max);
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
+    const additionalData = { min: min || '', max: max || '' };
+
     serverFunctions.setCellColor(selectedCell);
-    onAccept(selectedCell);
+    onAccept(selectedCell, 'input', additionalData);
     setLoadingState(true);
   };
 
   return (
-    <div>
+    <form className="uncertainInputs" onSubmit={acceptInput}>
       <p>Selection: {selectedCell}</p>
+      <TextField
+        type="number"
+        size="small"
+        label="Min Value"
+        name="min"
+        inputRef={inputRefs.current.min}
+      />
+      <TextField
+        type="number"
+        size="small"
+        label="Max Value"
+        name="max"
+        inputRef={inputRefs.current.max}
+      />
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
+      {/* Display error message */}
       <LoadingButton
         variant="text"
         color="success"
         size="small"
         disableElevation
-        onClick={acceptInput}
+        type="submit"
         disabled={selectedCell === defaultCellValue}
         loading={loadingState}
       >
@@ -58,7 +96,7 @@ const InputPane = ({ onHide, onAccept }) => {
       >
         Cancel
       </Button>
-    </div>
+    </form>
   );
 };
 

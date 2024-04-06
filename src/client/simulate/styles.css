@@ -1,6 +1,8 @@
 html * {
    font-family: Arial !important;
    font-size: 0.9rem;
+   zoom: 0.97;  
+   -moz-transform: scale(0.97);
 }
 
 button .create-input {
@@ -9,4 +11,11 @@ button .create-input {
 
 button .create-input:hover {
     background-color: #38853B !important;
+}
+
+.uncertainInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
 }
