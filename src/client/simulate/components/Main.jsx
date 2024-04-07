@@ -10,6 +10,8 @@ import {
   IconButton,
 } from '@mui/material';
 
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+
 import { Add, Delete } from '@mui/icons-material';
 
 import InputPane from './InputPane';
@@ -18,9 +20,11 @@ import OutputPane from './OutputPane';
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const Main = () => {
-  const [activePane, setActivePane] = useState(null);
-  const [loadingDeleteState, setLoadingDeleteState] = useState(false);
   const [appState, setAppState] = useState([]);
+  const [activePane, setActivePane] = useState(null);
+  const [isSimulating, setIsSimulating] = useState(false);
+  const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
+  const [loadingDeleteState, setLoadingDeleteState] = useState(false);
 
   const inputVariables = appState.filter(
     (item) => item[Object.keys(item)[0]].type === 'input'
@@ -94,6 +98,30 @@ const Main = () => {
         console.error('Error:', error);
       });
   };
+
+  const launchSimulation = () => {
+    setIsSimulating(true);
+    serverFunctions
+      .runSimulation(appState)
+      .then(() => {
+        setIsSimulating(false);
+      })
+      .catch((error) => {
+        console.error('An error occurred during the simulation:', error);
+        setIsSimulating(false);
+      });
+  };
+
+  useEffect(() => {
+    const hasInput = appState.some(
+      (item) => item[Object.keys(item)[0]].type === 'input'
+    );
+    const hasOutput = appState.some(
+      (item) => item[Object.keys(item)[0]].type === 'output'
+    );
+
+    setIsReadyToSimulate(hasInput && hasOutput);
+  }, [appState]);
 
   useEffect(() => {
     serverFunctions.loadSimData().then((data) => {
@@ -210,6 +238,19 @@ const Main = () => {
           );
         })}
       </List>
+      <Box mt={2} mb={2}></Box>
+      <Button
+        variant="contained"
+        color="success"
+        loading="true"
+        size="small"
+        startIcon={<PlayArrowRoundedIcon />}
+        disableElevation
+        disabled={!isReadyToSimulate || isSimulating}
+        onClick={() => launchSimulation()}
+      >
+        Simulate
+      </Button>
     </div>
   );
 };

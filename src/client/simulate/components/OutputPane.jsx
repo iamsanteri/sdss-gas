@@ -35,8 +35,8 @@ const OutputPane = ({ onHide, onAccept }) => {
   const acceptOutput = async () => {
     setLoadingState(true); // Start loading
 
+    const sheetName = await serverFunctions.getSheetNameOfSelectedCell();
     const formula = await serverFunctions.getCellFormula(selectedCell);
-    console.log(formula);
 
     if (!formula) {
       setErrorMessage('Selected cell must contain a formula');
@@ -46,8 +46,15 @@ const OutputPane = ({ onHide, onAccept }) => {
 
     // If there's no error, clear the error message, set the cell color, and accept the output
     setErrorMessage('');
-    onAccept(selectedCell, 'output', {});
-    setLoadingState(false); // Stop loading
+    try {
+      const additionalData = { sheetName };
+      await onAccept(selectedCell, 'output', additionalData);
+      onHide();
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoadingState(false); // Stop loading
+    }
   };
 
   return (

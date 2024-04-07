@@ -7,11 +7,12 @@ import {
   openSimulate,
 } from './ui';
 
-import { getSheetsData, addSheet, deleteSheet, setActiveSheet } from './sheets';
+import { getSheetsData, getSheetNameOfSelectedCell, addSheet, deleteSheet, setActiveSheet } from './sheets';
 
 // IMPORT YOUR SERVER-SIDE LOGIC HERE - REMEMBER TO ALSO EXPORT BELOW
 import { saveSimData, loadSimData  } from './state';
 import { getSelectedCell, setCellNote, clearCellNote, getCellFormula } from './cells';
+import { runSimulation } from './simulate';
 
 // Public functions must be exported as named exports
 export {
@@ -28,7 +29,9 @@ export {
   saveSimData,
   loadSimData,
   getSelectedCell,
+  getSheetNameOfSelectedCell,
   setCellNote,
   clearCellNote,
-  getCellFormula
+  getCellFormula,
+  runSimulation,
 };

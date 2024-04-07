@@ -37,7 +37,7 @@ const InputPane = ({ onHide, onAccept }) => {
     };
   }, []);
 
-  const acceptInput = (event) => {
+  const acceptInput = async (event) => {
     event.preventDefault();
 
     const min = inputRefs.current.min.current.value;
@@ -50,10 +50,17 @@ const InputPane = ({ onHide, onAccept }) => {
       return;
     }
 
-    const additionalData = { min: min || '', max: max || '' };
-
-    onAccept(selectedCell, 'input', additionalData);
-    setLoadingState(true);
+    try {
+      setLoadingState(true);
+      const sheetName = await serverFunctions.getSheetNameOfSelectedCell();
+      const additionalData = { min: min || '', max: max || '', sheetName };
+      await onAccept(selectedCell, 'input', additionalData);
+      onHide();
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoadingState(false);
+    }
   };
 
   return (

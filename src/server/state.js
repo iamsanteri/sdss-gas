@@ -8,8 +8,8 @@
       "timestamp": "2022-03-14T15:09:26.535Z",
       "additionalData": {
         "min": "1",
-        "max": "10"
-      
+        "max": "10",
+        "sheetName": "Sheet1"
       } <- Object
       // More properties...
     } 

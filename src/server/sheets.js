@@ -14,6 +14,11 @@ export const getSheetsData = () => {
   });
 };
 
+export const getSheetNameOfSelectedCell = () => {
+  const activeSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  return activeSheet.getName();
+};
+
 export const addSheet = (sheetTitle) => {
   SpreadsheetApp.getActive().insertSheet(sheetTitle);
   return getSheetsData();
