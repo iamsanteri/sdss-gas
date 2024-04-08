@@ -5,7 +5,7 @@ import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
-import { validateInput } from '../../utils/validation';
+import { validateInput } from '../../utils/clientValidation';
 
 const InputPane = ({ onHide, onAccept, appState }) => {
   const defaultCellValue = 'Getting cell...';
