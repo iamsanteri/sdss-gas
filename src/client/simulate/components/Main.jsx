@@ -217,7 +217,11 @@ const Main = () => {
         </Button>
       )}
       {activePane === 'output' && (
-        <OutputPane onHide={hidePane} onAccept={acceptVariable} />
+        <OutputPane
+          onHide={hidePane}
+          onAccept={acceptVariable}
+          appState={appState}
+        />
       )}
       <List>
         {outputVariables.map((item) => {

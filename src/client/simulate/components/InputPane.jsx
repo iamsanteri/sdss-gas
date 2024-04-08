@@ -123,6 +123,8 @@ const InputPane = ({ onHide, onAccept, appState }) => {
 InputPane.propTypes = {
   onHide: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
+  appState: PropTypes.array.isRequired,
+  inputVariables: PropTypes.array.isRequired,
 };
 
 export default InputPane;

@@ -5,7 +5,7 @@ import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
-const OutputPane = ({ onHide, onAccept }) => {
+const OutputPane = ({ onHide, onAccept, appState }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
   const [loadingState, setLoadingState] = useState(false);
@@ -21,36 +21,47 @@ const OutputPane = ({ onHide, onAccept }) => {
         .catch((error) => {
           console.log('Failed to get selected cell: ', error);
         });
-    }, 1000); // Poll every 1 second
+    }, 1000);
 
-    // Clear interval on component unmount
     return () => {
       clearInterval(intervalId);
     };
   }, []);
 
   const acceptOutput = async () => {
-    setLoadingState(true); // Start loading
+    setLoadingState(true);
 
     const sheetName = await serverFunctions.getSheetNameOfSelectedCell();
     const formula = await serverFunctions.getCellFormula(selectedCell);
 
     if (!formula) {
       setErrorMessage('Selected cell must contain a formula');
-      setLoadingState(false); // Stop loading
+      setLoadingState(false);
       return;
     }
 
-    // If there's no error, clear the error message, set the cell color, and accept the output
     setErrorMessage('');
     try {
-      const additionalData = { formula };
+      const additionalData = { sheetName, formula };
+
+      // Check if the cell is already in the state
+      const isCellInState = appState.some(
+        (variable) =>
+          variable.cellNotation === selectedCell &&
+          variable.sheetName === sheetName
+      );
+
+      if (isCellInState) {
+        setErrorMessage('This cell has already been chosen for simulation');
+        return;
+      }
+
       await onAccept('output', additionalData, selectedCell, sheetName);
       onHide();
     } catch (error) {
       console.error('Error:', error);
     } finally {
-      setLoadingState(false); // Stop loading
+      setLoadingState(false);
     }
   };
 
@@ -63,7 +74,7 @@ const OutputPane = ({ onHide, onAccept }) => {
       }}
     >
       <p>Selection: {selectedCell}</p>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <LoadingButton
         variant="text"
         color="success"
@@ -91,6 +102,7 @@ const OutputPane = ({ onHide, onAccept }) => {
 OutputPane.propTypes = {
   onHide: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
+  appState: PropTypes.array.isRequired,
 };
 
 export default OutputPane;
