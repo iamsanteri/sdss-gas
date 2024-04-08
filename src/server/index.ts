@@ -1,20 +1,42 @@
+// UI SETUP
 import {
   onOpen,
   openDialog,
-  openDialogBootstrap,
   openDialogMUI,
+  openDialogBootstrap,
   openDialogTailwindCSS,
   openSimulate,
 } from './ui';
 
-import { getSheetsData, getSheetNameOfSelectedCell, addSheet, deleteSheet, setActiveSheet } from './sheets';
+// STATE PERSISTENCE
+import { 
+  saveSimData, 
+  loadSimData  
+} from './state';
 
-// IMPORT YOUR SERVER-SIDE LOGIC HERE - REMEMBER TO ALSO EXPORT BELOW
-import { saveSimData, loadSimData  } from './state';
-import { getSelectedCell, setCellNote, clearCellNote, getCellFormula } from './cells';
-import { runSimulation } from './simulate';
+// SHEET OPERATIONS
+import { 
+  addSheet,
+  deleteSheet,
+  getSheetsData,
+  setActiveSheet,
+  getSheetNameOfSelectedCell,
+} from './sheets';
 
-// Public functions must be exported as named exports
+// CELL OPERATIONS
+import { 
+  getSelectedCell,
+  setCellNote,
+  clearCellNote,
+  getCellFormula
+} from './cells';
+
+// SIMULATION LOGIC
+import { 
+  runSimulation
+} from './simulate';
+
+// PUBLIC FUNCTIONS MUST BE EXPORTED AS NAMED EXPORTS
 export {
   onOpen,
   openDialog,

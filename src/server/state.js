@@ -1,5 +1,5 @@
 // Persisted in Google Apps Script PropertiesService
-// Application state schema as updated ongoingly, it's an array of objects:
+// Application state schema is being updated ongoingly, it's an array of objects:
 /*
 [
   {
@@ -21,7 +21,7 @@
   "cellNotation": "B1",
   "additionalData": {
     "formula": "=A1*2"
-  }
+  },
   // More variables...
 ]
 */

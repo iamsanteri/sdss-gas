@@ -1,9 +1,14 @@
-/* IMPLEMENTS CELL-RELATED FUNCTIONS */
-
 export const getSelectedCell = () => {
-  const activeSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const activeCell = activeSheet.getActiveCell();
-  return activeCell.getA1Notation();
+  return new Promise((resolve, reject) => {
+    try {
+      const activeSheet =
+        SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      const activeCell = activeSheet.getActiveCell();
+      resolve(activeCell.getA1Notation());
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 export const setCellNote = (cellA1Notation, note) => {
@@ -37,7 +42,14 @@ export const clearCellNote = (cellA1Notation) => {
 };
 
 export const getCellFormula = (cellA1Notation) => {
-  const activeSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const cell = activeSheet.getRange(cellA1Notation);
-  return cell.getFormula();
+  return new Promise((resolve, reject) => {
+    try {
+      const activeSheet =
+        SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      const cell = activeSheet.getRange(cellA1Notation);
+      resolve(cell.getFormula());
+    } catch (error) {
+      reject(error);
+    }
+  });
 };

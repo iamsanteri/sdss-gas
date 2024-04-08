@@ -4,7 +4,8 @@ const getActiveSheetName = () => SpreadsheetApp.getActive().getSheetName();
 
 export const getSheetsData = () => {
   const activeSheetName = getActiveSheetName();
-  return getSheets().map((sheet, index) => {
+  const sheets = getSheets();
+  return sheets.map((sheet, index) => {
     const name = sheet.getName();
     return {
       name,
