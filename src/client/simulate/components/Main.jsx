@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Button,
   Box,
@@ -26,20 +26,28 @@ const Main = () => {
   const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
 
-  const inputVariables = appState.filter((item) => item.type === 'input');
-  const outputVariables = appState.filter((item) => item.type === 'output');
+  // useMemo for Filtering (performance)
+  const inputVariables = useMemo(
+    () => appState.filter((item) => item.type === 'input'),
+    [appState]
+  );
+  const outputVariables = useMemo(
+    () => appState.filter((item) => item.type === 'output'),
+    [appState]
+  );
 
-  const showInputPane = () => {
+  // useCallback for Functions (performance)
+  const showInputPane = useCallback(() => {
     setActivePane('input');
-  };
+  }, []);
 
-  const showOutputPane = () => {
+  const showOutputPane = useCallback(() => {
     setActivePane('output');
-  };
+  }, []);
 
-  const hidePane = () => {
+  const hidePane = useCallback(() => {
     setActivePane(null);
-  };
+  }, []);
 
   const acceptVariable = (
     varType,
