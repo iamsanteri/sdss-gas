@@ -26,12 +26,8 @@ const Main = () => {
   const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
 
-  const inputVariables = appState.filter(
-    (item) => item[Object.keys(item)[0]].type === 'input'
-  );
-  const outputVariables = appState.filter(
-    (item) => item[Object.keys(item)[0]].type === 'output'
-  );
+  const inputVariables = appState.filter((item) => item.type === 'input');
+  const outputVariables = appState.filter((item) => item.type === 'output');
 
   const showInputPane = () => {
     setActivePane('input');
@@ -45,20 +41,30 @@ const Main = () => {
     setActivePane(null);
   };
 
-  const acceptVariable = (cellNotation, varType, additionalDataObj) => {
+  const acceptVariable = (
+    varType,
+    additionalDataObj,
+    cellNotation,
+    sheetName
+  ) => {
     return new Promise((resolve, reject) => {
+      function generateShortID() {
+        return Math.random().toString(36).substring(2, 7);
+      }
+
+      const id = generateShortID();
       const newVariable = {
-        [cellNotation]: {
-          timestamp: new Date().toISOString(),
-          type: varType,
-          additionalData: additionalDataObj,
-        },
+        id,
+        cellNotation,
+        sheetName,
+        timestamp: new Date().toISOString(),
+        type: varType,
+        additionalData: additionalDataObj,
       };
-      const cellA1Notation = Object.keys(newVariable)[0];
       const note = varType === 'input' ? 'Input variable' : 'Output variable';
 
       serverFunctions
-        .setCellNote(cellA1Notation, note)
+        .setCellNote(cellNotation, note)
         .then(() => {
           setAppState((prevState) => {
             const newAppState = [...prevState, newVariable];
@@ -77,15 +83,18 @@ const Main = () => {
     });
   };
 
-  const deleteVariable = (cellNotation) => {
+  const deleteVariable = (id) => {
     setLoadingDeleteState(true);
+
+    const variableToDelete = appState.find((variable) => variable.id === id);
+    const { cellNotation } = variableToDelete;
 
     serverFunctions
       .clearCellNote(cellNotation)
       .then(() => {
         setAppState((prevState) => {
           const newAppState = prevState.filter(
-            (variable) => !(cellNotation in variable)
+            (variable) => variable.id !== id
           );
           serverFunctions.saveSimData(newAppState); // Use the updated state directly
           return newAppState;
@@ -113,12 +122,8 @@ const Main = () => {
   };
 
   useEffect(() => {
-    const hasInput = appState.some(
-      (item) => item[Object.keys(item)[0]].type === 'input'
-    );
-    const hasOutput = appState.some(
-      (item) => item[Object.keys(item)[0]].type === 'output'
-    );
+    const hasInput = appState.some((item) => item.type === 'input');
+    const hasOutput = appState.some((item) => item.type === 'output');
 
     setIsReadyToSimulate(hasInput && hasOutput);
   }, [appState]);
@@ -156,21 +161,29 @@ const Main = () => {
         </Button>
       )}
       {activePane === 'input' && (
-        <InputPane onHide={hidePane} onAccept={acceptVariable} />
+        <InputPane
+          onHide={hidePane}
+          onAccept={acceptVariable}
+          appState={appState}
+        />
       )}
       <List>
-        {inputVariables.map((item, index) => {
-          const cellNotation = Object.keys(item)[0];
-          const uncertainData = item[cellNotation].additionalData;
+        {inputVariables.map((item) => {
+          const {
+            id,
+            cellNotation,
+            timestamp,
+            type,
+            additionalData,
+            sheetName,
+          } = item;
           return (
-            <ListItem key={index}>
+            <ListItem key={id}>
               <ListItemText
-                primary={cellNotation}
-                secondary={`Timestamp: ${
-                  item[cellNotation].timestamp
-                } - Type: ${item[cellNotation].type} - Additional data: ${
-                  Object.keys(uncertainData).length > 0
-                    ? Object.entries(uncertainData)
+                primary={`${cellNotation} (${sheetName})`}
+                secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
+                  Object.keys(additionalData).length > 0
+                    ? Object.entries(additionalData)
                         .map(([key, value]) => `${key}: ${value}`)
                         .join(', ')
                     : 'Empty'
@@ -180,7 +193,7 @@ const Main = () => {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => deleteVariable(cellNotation)}
+                  onClick={() => deleteVariable(id)}
                   disabled={loadingDeleteState}
                 >
                   <Delete />
@@ -207,18 +220,22 @@ const Main = () => {
         <OutputPane onHide={hidePane} onAccept={acceptVariable} />
       )}
       <List>
-        {outputVariables.map((item, index) => {
-          const cellNotation = Object.keys(item)[0];
-          const uncertainData = item[cellNotation].additionalData;
+        {outputVariables.map((item) => {
+          const {
+            id,
+            cellNotation,
+            timestamp,
+            type,
+            additionalData,
+            sheetName,
+          } = item;
           return (
-            <ListItem key={index}>
+            <ListItem key={id}>
               <ListItemText
-                primary={cellNotation}
-                secondary={`Timestamp: ${
-                  item[cellNotation].timestamp
-                } - Type: ${item[cellNotation].type} - Additional data: ${
-                  Object.keys(uncertainData).length > 0
-                    ? Object.entries(uncertainData)
+                primary={`${cellNotation} (${sheetName})`}
+                secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
+                  Object.keys(additionalData).length > 0
+                    ? Object.entries(additionalData)
                         .map(([key, value]) => `${key}: ${value}`)
                         .join(', ')
                     : 'Empty'
@@ -228,7 +245,7 @@ const Main = () => {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => deleteVariable(cellNotation)}
+                  onClick={() => deleteVariable(id)}
                   disabled={loadingDeleteState}
                 >
                   <Delete />

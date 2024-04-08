@@ -7,7 +7,7 @@ import { serverFunctions } from '../../utils/serverFunctions';
 
 import { validateInput } from '../../utils/validation';
 
-const InputPane = ({ onHide, onAccept }) => {
+const InputPane = ({ onHide, onAccept, appState }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
   const [loadingState, setLoadingState] = useState(false);
@@ -26,7 +26,6 @@ const InputPane = ({ onHide, onAccept }) => {
           setSelectedCell(cell);
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
           console.log('Failed to get selected cell: ', error);
         });
     }, 1000); // Poll every 1 second
@@ -53,8 +52,24 @@ const InputPane = ({ onHide, onAccept }) => {
     try {
       setLoadingState(true);
       const sheetName = await serverFunctions.getSheetNameOfSelectedCell();
-      const additionalData = { min: min || '', max: max || '', sheetName };
-      await onAccept(selectedCell, 'input', additionalData);
+      const additionalData = {
+        min: min || '',
+        max: max || '',
+      };
+
+      // Check if the cell is already in the state
+      const isCellInState = appState.some(
+        (variable) =>
+          variable.cellNotation === selectedCell &&
+          variable.sheetName === sheetName
+      );
+
+      if (isCellInState) {
+        setErrorMessage('This cell has already been chosen for simulation');
+        return;
+      }
+
+      await onAccept('input', additionalData, selectedCell, sheetName);
       onHide();
     } catch (error) {
       console.error('Error:', error);

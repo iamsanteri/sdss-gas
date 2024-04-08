@@ -5,8 +5,6 @@ import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
-// import { validateOutputCell } from '../../utils/validation';
-
 const OutputPane = ({ onHide, onAccept }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
@@ -21,7 +19,6 @@ const OutputPane = ({ onHide, onAccept }) => {
           setSelectedCell(cell);
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
           console.log('Failed to get selected cell: ', error);
         });
     }, 1000); // Poll every 1 second
@@ -47,8 +44,8 @@ const OutputPane = ({ onHide, onAccept }) => {
     // If there's no error, clear the error message, set the cell color, and accept the output
     setErrorMessage('');
     try {
-      const additionalData = { sheetName };
-      await onAccept(selectedCell, 'output', additionalData);
+      const additionalData = { formula };
+      await onAccept('output', additionalData, selectedCell, sheetName);
       onHide();
     } catch (error) {
       console.error('Error:', error);

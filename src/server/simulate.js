@@ -23,31 +23,24 @@ export const runSimulation = (appState) => {
       for (let i = 0; i < numSimulationRuns; i += 1) {
         const thisRunSampledValues = [];
 
-        appState.forEach((item) => {
-          const cellRef = Object.keys(item)[0];
-          const variableData = item[cellRef];
+        appState.forEach((variable) => {
+          const { type, cellNotation, sheetName, additionalData } = variable;
 
-          if (variableData.type === 'input') {
+          if (type === 'input') {
             const singleDraw =
               Math.random() *
-                (Number(variableData.additionalData.max) -
-                  Number(variableData.additionalData.min)) +
-              Number(variableData.additionalData.min);
-            const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-              variableData.additionalData.sheetName
-            );
+                (Number(additionalData.max) - Number(additionalData.min)) +
+              Number(additionalData.min);
+            const sheet =
+              SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
             if (!sheet) {
-              reject(
-                new Error(
-                  `No sheet found with name ${variableData.additionalData.sheetName}`
-                )
-              );
+              reject(new Error(`No sheet found with name ${sheetName}`));
               return;
             }
-            sheet.getRange(cellRef).setValue(singleDraw);
+            sheet.getRange(cellNotation).setValue(singleDraw);
             thisRunSampledValues.push(singleDraw);
             if (i === 0) {
-              headers.push(`${cellRef} (input)`);
+              headers.push(`${cellNotation} (input)`);
             }
           }
         });
@@ -57,29 +50,24 @@ export const runSimulation = (appState) => {
         const thisRunOutputValues = [];
 
         const outputVariables = appState.filter(
-          (item) => item[Object.keys(item)[0]].type === 'output'
+          (variable) => variable.type === 'output'
         );
 
         outputVariables.forEach((outputVariable) => {
-          const forecastCellRef = Object.keys(outputVariable)[0];
+          const { cellNotation, sheetName } = outputVariable;
+
           const forecastSheet =
-            SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-              outputVariable[forecastCellRef].additionalData.sheetName
-            );
+            SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
           if (!forecastSheet) {
-            reject(
-              new Error(
-                `No sheet found with name ${outputVariable[forecastCellRef].additionalData.sheetName}`
-              )
-            );
+            reject(new Error(`No sheet found with name ${sheetName}`));
             return;
           }
           const singleForecastedValue = forecastSheet
-            .getRange(forecastCellRef)
+            .getRange(cellNotation)
             .getValue();
           thisRunOutputValues.push(singleForecastedValue);
           if (i === 0) {
-            headers.push(`${forecastCellRef} (output)`);
+            headers.push(`${cellNotation} (output)`);
           }
         });
 
