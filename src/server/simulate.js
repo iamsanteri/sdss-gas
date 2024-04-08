@@ -1,3 +1,38 @@
+import { uniformDistribution } from './distributions/uniform-continuous';
+
+/* Define a function to handle the distribution sampling. 
+  For server side add new imported distributions here */
+
+function sampleFromDistribution(distributionType, additionalData) {
+  let singleDraw;
+  switch (distributionType) {
+    case 'uniform':
+      singleDraw = uniformDistribution(
+        Number(additionalData.min),
+        Number(additionalData.max)
+      );
+      break;
+    /* COMMENTED OUT FOR NOW UNTIL FUNCTIONALITY ENABLED LATER
+    case 'triangular':
+      singleDraw = triangularDistribution(
+        Number(additionalData.min),
+        Number(additionalData.mostLikely),
+        Number(additionalData.max)
+      );
+      break;
+    case 'normal':
+      singleDraw = normalDistribution(
+        Number(additionalData.mean),
+        Number(additionalData.stdDev)
+      );
+      break;
+    */
+    default:
+      throw new Error(`Invalid distribution type: ${distributionType}`);
+  }
+  return singleDraw;
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export const runSimulation = (appState) => {
   return new Promise((resolve, reject) => {
@@ -27,10 +62,11 @@ export const runSimulation = (appState) => {
           const { type, cellNotation, sheetName, additionalData } = variable;
 
           if (type === 'input') {
-            const singleDraw =
-              Math.random() *
-                (Number(additionalData.max) - Number(additionalData.min)) +
-              Number(additionalData.min);
+            const singleDraw = sampleFromDistribution(
+              additionalData.distributionType,
+              additionalData
+            );
+
             const sheet =
               SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
             if (!sheet) {

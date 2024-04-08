@@ -59,8 +59,12 @@ const Main = () => {
         sheetName,
         timestamp: new Date().toISOString(),
         type: varType,
-        additionalData: additionalDataObj,
+        additionalData: {
+          ...additionalDataObj,
+          distributionType: varType === 'input' ? 'uniform' : undefined,
+        },
       };
+
       const note = varType === 'input' ? 'Input variable' : 'Output variable';
 
       serverFunctions

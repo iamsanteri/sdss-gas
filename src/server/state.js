@@ -1,6 +1,7 @@
-// Persisted in Google Apps Script PropertiesService
-// Application state schema is being updated ongoingly, it's an array of objects:
-/*
+/* 
+Persisted in Google Apps Script PropertiesService
+Application state schema is being updated ongoingly, it's an array of objects:
+
 [
   {
     "id": "id12345",
@@ -10,17 +11,19 @@
     "cellNotation": "A1",
     "additionalData": {
       "min": "1",
-      "max": "10"
+      "max": "10",
+      "distributionType": "uniform"
     }
   },
   {
-  "id": "id67890",
-  "type": "output",
-  "timestamp": "2022-03-14T15:09:26.535Z",
-  "sheetName": "Sheet1",
-  "cellNotation": "B1",
-  "additionalData": {
-    "formula": "=A1*2"
+    "id": "id67890",
+    "type": "output",
+    "timestamp": "2022-03-14T15:09:26.535Z",
+    "sheetName": "Sheet1",
+    "cellNotation": "B1",
+    "additionalData": {
+      "formula": "=A1*2"
+    }
   },
   // More variables...
 ]
