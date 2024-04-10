@@ -18,3 +18,7 @@ button .create-input:hover {
     flex-direction: column;
     gap: 10px;
 }
+
+.sdss-icon {
+    width: 50%;
+}

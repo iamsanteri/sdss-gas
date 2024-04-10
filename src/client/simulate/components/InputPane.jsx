@@ -7,6 +7,8 @@ import { serverFunctions } from '../../utils/serverFunctions';
 
 import { validateInput } from '../../utils/clientValidation';
 
+import DistrSelection from './DistrSelection';
+
 const InputPane = ({ onHide, onAccept, appState }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
@@ -80,6 +82,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
 
   return (
     <form className="valuePane" onSubmit={acceptInput}>
+      <DistrSelection />
       <p>Selection: {selectedCell}</p>
       <TextField
         type="number"
