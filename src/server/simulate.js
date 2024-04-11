@@ -1,4 +1,6 @@
-import { uniformDistribution } from './distributions/uniform-continuous';
+import { uniformDistribution } from './distributions/uniformContinuous';
+import { triangularDistribution } from './distributions/triangularContinuous';
+import { normalDistribution } from './distributions/normalContinuous';
 
 /* Define a function to handle the distribution sampling. 
   For server side add new imported distributions here */
@@ -6,27 +8,25 @@ import { uniformDistribution } from './distributions/uniform-continuous';
 function sampleFromDistribution(distributionType, additionalData) {
   let singleDraw;
   switch (distributionType) {
-    case 'uniform':
+    case 'uniformContinuous':
       singleDraw = uniformDistribution(
         Number(additionalData.min),
         Number(additionalData.max)
       );
       break;
-    /* COMMENTED OUT FOR NOW UNTIL FUNCTIONALITY ENABLED LATER
-    case 'triangular':
+    case 'triangularContinuous':
       singleDraw = triangularDistribution(
         Number(additionalData.min),
-        Number(additionalData.mostLikely),
+        Number(additionalData.mode),
         Number(additionalData.max)
       );
       break;
-    case 'normal':
+    case 'normalContinuous':
       singleDraw = normalDistribution(
         Number(additionalData.mean),
         Number(additionalData.stdDev)
       );
       break;
-    */
     default:
       throw new Error(`Invalid distribution type: ${distributionType}`);
   }
@@ -37,7 +37,7 @@ function sampleFromDistribution(distributionType, additionalData) {
 export const runSimulation = (appState) => {
   return new Promise((resolve, reject) => {
     try {
-      const numSimulationRuns = 50;
+      const numSimulationRuns = 500;
       const forecastedValuesArray = [];
       const sampledValuesArray = [];
       const headers = [];

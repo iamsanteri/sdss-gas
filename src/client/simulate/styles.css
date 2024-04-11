@@ -13,12 +13,12 @@ button .create-input:hover {
     background-color: #38853B !important;
 }
 
-.valuePane {
+.distr-inputs {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .sdss-icon {
-    width: 50%;
+    width: 20%;
 }

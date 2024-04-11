@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const DistrSelection = () => {
+import { ButtonBase, Tooltip, Box } from '@mui/material';
+
+import UniformContinuous from './distributions/UniformContinuous';
+import TriangularContinuous from './distributions/TriangularContinuous';
+import NormalContinuous from './distributions/NormalContinuous';
+
+/* PLEASE NOTE THAT COPILOT GETS CONFUSED IN THIS COMPONENT DUE TO SVG BELOW */
+
+const DistrSelection = ({ onInputChange }) => {
+  const [selectedDistr, setSelectedDistr] = useState(null);
+  const [activeButton, setActiveButton] = useState(null);
+
+  const handleDistrChange = (distr) => {
+    setSelectedDistr(distr);
+  };
+
+  const handleClick = (id, distr) => {
+    setActiveButton(id);
+    handleDistrChange(distr);
+  };
+
   const SDSSIcon1 = () => (
     <svg
+      customName="NORMAL"
       className="sdss-icon"
       clipRule="evenodd"
       strokeLinecap="round"
@@ -28,6 +50,7 @@ const DistrSelection = () => {
 
   const SDSSIcon2 = () => (
     <svg
+      customName="UNIFORM"
       className="sdss-icon"
       clipRule="evenodd"
       strokeLinecap="round"
@@ -53,6 +76,7 @@ const DistrSelection = () => {
 
   const SDSSIcon3 = () => (
     <svg
+      customName="TRIANGULAR"
       className="sdss-icon"
       height="100%"
       strokeMiterlimit="10"
@@ -109,6 +133,7 @@ const DistrSelection = () => {
 
   const SDSSIcon4 = () => (
     <svg
+      customName="ADDITIONAL"
       className="sdss-icon"
       height="100%"
       strokeMiterlimit="10"
@@ -165,12 +190,62 @@ const DistrSelection = () => {
 
   return (
     <div>
-      <SDSSIcon1 />
-      <SDSSIcon2 />
-      <SDSSIcon3 />
-      <SDSSIcon4 />
+      <Tooltip title="Uniform">
+        <ButtonBase
+          onClick={() => handleClick(1, 'uniformContinuous')}
+          style={{
+            backgroundColor: activeButton === 1 ? 'lightgray' : 'white',
+          }}
+        >
+          <SDSSIcon2 />
+        </ButtonBase>
+      </Tooltip>
+      <Tooltip title="Triangular">
+        <ButtonBase
+          onClick={() => handleClick(2, 'triangularContinuous')}
+          style={{
+            backgroundColor: activeButton === 2 ? 'lightgray' : 'white',
+          }}
+        >
+          <SDSSIcon3 />
+        </ButtonBase>
+      </Tooltip>
+      <Tooltip title="Normal">
+        <ButtonBase
+          onClick={() => handleClick(3, 'normalContinuous')}
+          style={{
+            backgroundColor: activeButton === 3 ? 'lightgray' : 'white',
+          }}
+        >
+          <SDSSIcon1 />
+        </ButtonBase>
+      </Tooltip>
+      <Tooltip title="More distributions (coming soon...)">
+        <ButtonBase
+          style={{
+            opacity: 0.5,
+            backgroundColor: 'white',
+          }}
+        >
+          <SDSSIcon4 />
+        </ButtonBase>
+      </Tooltip>
+      <Box mt={2} mb={2} />
+      {selectedDistr === 'uniformContinuous' && (
+        <UniformContinuous onInputChange={onInputChange} />
+      )}
+      {selectedDistr === 'triangularContinuous' && (
+        <TriangularContinuous onInputChange={onInputChange} />
+      )}
+      {selectedDistr === 'normalContinuous' && (
+        <NormalContinuous onInputChange={onInputChange} />
+      )}
     </div>
   );
+};
+
+DistrSelection.propTypes = {
+  onInputChange: PropTypes.func.isRequired,
 };
 
 export default DistrSelection;

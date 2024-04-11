@@ -60,6 +60,16 @@ const Main = () => {
         return Math.random().toString(36).substring(2, 7);
       }
 
+      const { distributionType } = additionalDataObj;
+
+      if (varType === 'input' && !distributionType) {
+        console.error(
+          'Error: No distribution type selected for input variable'
+        );
+        reject(new Error('No distribution type selected for input variable'));
+        return;
+      }
+
       const id = generateShortID();
       const newVariable = {
         id,
@@ -69,7 +79,7 @@ const Main = () => {
         type: varType,
         additionalData: {
           ...additionalDataObj,
-          distributionType: varType === 'input' ? 'uniform' : undefined,
+          distributionType,
         },
       };
 

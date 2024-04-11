@@ -1,24 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, TextField } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
-import { validateInput } from '../../utils/clientValidation';
+import {
+  validateUniformContinuous,
+  validateTriangularContinuous,
+  validateNormalContinuous,
+} from '../../utils/clientValidation';
 
 import DistrSelection from './DistrSelection';
 
 const InputPane = ({ onHide, onAccept, appState }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
+  const [selectedDistribution, setSelectedDistribution] = useState('');
+  const [additionalData, setAdditionalData] = useState({});
   const [loadingState, setLoadingState] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const inputRefs = useRef({
-    min: React.createRef(),
-    max: React.createRef(),
-  });
+  const handleInputChange = ({ name, value, distributionType }) => {
+    setAdditionalData((prevData) => ({ ...prevData, [name]: value }));
+    setSelectedDistribution(distributionType);
+  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -40,26 +46,39 @@ const InputPane = ({ onHide, onAccept, appState }) => {
 
   const acceptInput = async (event) => {
     event.preventDefault();
-
-    const min = inputRefs.current.min.current.value;
-    const max = inputRefs.current.max.current.value;
-
-    const validationError = validateInput(min, max);
-
-    if (validationError) {
-      setErrorMessage(validationError);
-      return;
-    }
-
+    setLoadingState(true);
     try {
-      setLoadingState(true);
-      const sheetName = await serverFunctions.getSheetNameOfSelectedCell();
-      const additionalData = {
-        min: min || '',
-        max: max || '',
-      };
+      // Check whether inputs are valid
+      let validationError;
+      switch (selectedDistribution) {
+        case 'uniformContinuous': {
+          const { min, max } = additionalData;
+          validationError = validateUniformContinuous(min, max);
+          break;
+        }
+        case 'triangularContinuous': {
+          const { min, mode, max } = additionalData;
+          validationError = validateTriangularContinuous(min, mode, max);
+          break;
+        }
+        case 'normalContinuous': {
+          const { mean, stdDev } = additionalData;
+          validationError = validateNormalContinuous(mean, stdDev);
+          break;
+        }
+        // Add cases for other distribution types as above...
+        default:
+          validationError = 'Unknown distribution type';
+      }
 
-      // Check if the cell is already in the state
+      if (validationError) {
+        setErrorMessage(validationError);
+        return;
+      }
+
+      const sheetName = await serverFunctions.getSheetNameOfSelectedCell();
+
+      // Check if the cell is already in state
       const isCellInState = appState.some(
         (variable) =>
           variable.cellNotation === selectedCell &&
@@ -71,7 +90,12 @@ const InputPane = ({ onHide, onAccept, appState }) => {
         return;
       }
 
-      await onAccept('input', additionalData, selectedCell, sheetName);
+      await onAccept(
+        'input',
+        { ...additionalData, distributionType: selectedDistribution },
+        selectedCell,
+        sheetName
+      );
       onHide();
     } catch (error) {
       console.error('Error:', error);
@@ -81,24 +105,11 @@ const InputPane = ({ onHide, onAccept, appState }) => {
   };
 
   return (
-    <form className="valuePane" onSubmit={acceptInput}>
-      <DistrSelection />
+    <form onSubmit={acceptInput}>
       <p>Selection: {selectedCell}</p>
-      <TextField
-        type="number"
-        size="small"
-        label="Min Value"
-        name="min"
-        inputRef={inputRefs.current.min}
-      />
-      <TextField
-        type="number"
-        size="small"
-        label="Max Value"
-        name="max"
-        inputRef={inputRefs.current.max}
-      />
+      <DistrSelection appState={appState} onInputChange={handleInputChange} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
+      <Box mt={2} mb={2} />
       <LoadingButton
         variant="text"
         color="success"
@@ -127,7 +138,6 @@ InputPane.propTypes = {
   onHide: PropTypes.func.isRequired,
   onAccept: PropTypes.func.isRequired,
   appState: PropTypes.array.isRequired,
-  inputVariables: PropTypes.array.isRequired,
 };
 
 export default InputPane;
