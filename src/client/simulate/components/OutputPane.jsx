@@ -42,7 +42,7 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
 
     setErrorMessage('');
     try {
-      const additionalData = { sheetName, formula };
+      const additionalData = { formula }; // Store name here, implement logic and client side code
 
       // Check if the cell is already in the state
       const isCellInState = appState.some(

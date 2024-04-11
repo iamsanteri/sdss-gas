@@ -19,7 +19,6 @@ Application state schema is being updated ongoingly, it's an array of objects:
     "id": "id67890",
     "type": "output",
     "timestamp": "2022-03-14T15:09:26.535Z",
-    "sheetName": "Sheet1",
     "cellNotation": "B1",
     "additionalData": {
       "formula": "=A1*2"
