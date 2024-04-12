@@ -36,7 +36,7 @@ function sampleFromDistribution(distributionType, additionalData) {
 function writeUserNote(hiddenSheet, lastColumn) {
   const userNote = [
     'Automatic note:',
-    'Each row is one scenario or a simulation run. You can use this data to draw any desired figure or export it for visualization in other software.',
+    'Each row is one simulation run or a scenario. You can use this data to draw any desired figure or export it for visualization in other software.',
     'If you need more than 1000 runs, you can rename this sheet and run simulations multiple times while keeping your previous data.',
     'As with additional distributions or other functionality, improved analytics and visualizations are coming soon and will be released in the future.',
     'If you have any feedback or would like to wishlist some features, please let me know by emailing your ideas to: santeri@simdss.com',
