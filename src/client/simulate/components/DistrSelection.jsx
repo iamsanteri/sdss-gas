@@ -225,6 +225,7 @@ const DistrSelection = ({ onInputChange }) => {
           style={{
             opacity: 0.5,
             backgroundColor: 'white',
+            cursor: 'not-allowed',
           }}
         >
           <SDSSIcon4 />
