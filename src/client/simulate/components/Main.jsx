@@ -16,6 +16,7 @@ import { Add, Delete } from '@mui/icons-material';
 
 import InputPane from './InputPane';
 import OutputPane from './OutputPane';
+import SimulationSettings from './SimulationSettings';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
@@ -23,6 +24,7 @@ const Main = () => {
   const [appState, setAppState] = useState([]);
   const [activePane, setActivePane] = useState(null);
   const [isSimulating, setIsSimulating] = useState(false);
+  const [numSimulationRuns, setNumSimulationRuns] = useState(100);
   const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
 
@@ -105,14 +107,14 @@ const Main = () => {
     });
   };
 
-  const deleteVariable = (id) => {
+  const deleteVariable = (id, sheetName) => {
     setLoadingDeleteState(true);
 
     const variableToDelete = appState.find((variable) => variable.id === id);
     const { cellNotation } = variableToDelete;
 
     serverFunctions
-      .clearCellNote(cellNotation)
+      .clearCellNote(sheetName, cellNotation)
       .then(() => {
         setAppState((prevState) => {
           const newAppState = prevState.filter(
@@ -133,7 +135,7 @@ const Main = () => {
   const launchSimulation = () => {
     setIsSimulating(true);
     serverFunctions
-      .runSimulation(appState)
+      .runSimulation(appState, numSimulationRuns)
       .then(() => {
         setIsSimulating(false);
       })
@@ -179,7 +181,7 @@ const Main = () => {
           disableElevation
           onClick={() => showInputPane()}
         >
-          Create input
+          Create input assumption
         </Button>
       )}
       {activePane === 'input' && (
@@ -215,7 +217,7 @@ const Main = () => {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => deleteVariable(id)}
+                  onClick={() => deleteVariable(id, sheetName)}
                   disabled={loadingDeleteState}
                 >
                   <Delete />
@@ -235,7 +237,7 @@ const Main = () => {
           disableElevation
           onClick={() => showOutputPane()}
         >
-          Create output
+          Create forecast output
         </Button>
       )}
       {activePane === 'output' && (
@@ -258,7 +260,7 @@ const Main = () => {
           return (
             <ListItem key={id}>
               <ListItemText
-                primary={`${cellNotation} (${sheetName})`}
+                primary={`${cellNotation} (${sheetName}): ${additionalData.name}`}
                 secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
                   Object.keys(additionalData).length > 0
                     ? Object.entries(additionalData)
@@ -271,7 +273,7 @@ const Main = () => {
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => deleteVariable(id)}
+                  onClick={() => deleteVariable(id, sheetName)}
                   disabled={loadingDeleteState}
                 >
                   <Delete />
@@ -281,18 +283,28 @@ const Main = () => {
           );
         })}
       </List>
-      <Box mt={2} mb={2}></Box>
+      <Box mt={2} mb={2} />
+      <SimulationSettings
+        numSimulationRuns={numSimulationRuns}
+        setNumSimulationRuns={setNumSimulationRuns}
+      />
+      <Box mt={2} mb={2} />
       <Button
         variant="contained"
         color="success"
-        loading="true"
         size="small"
-        startIcon={<PlayArrowRoundedIcon />}
+        startIcon={
+          isSimulating ? (
+            <CircularProgress size={15} color="inherit" />
+          ) : (
+            <PlayArrowRoundedIcon />
+          )
+        }
         disableElevation
         disabled={!isReadyToSimulate || isSimulating}
         onClick={() => launchSimulation()}
       >
-        Simulate
+        {isSimulating ? 'Simulating' : 'Start Simulation'}
       </Button>
     </div>
   );

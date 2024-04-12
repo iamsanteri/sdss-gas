@@ -26,12 +26,12 @@ export const setCellNote = (cellA1Notation, note) => {
   });
 };
 
-export const clearCellNote = (cellA1Notation) => {
+export const clearCellNote = (sheetName, cellA1Notation) => {
   return new Promise((resolve, reject) => {
     try {
-      const activeSheet =
-        SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-      const cell = activeSheet.getRange(cellA1Notation);
+      const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+      const sheet = spreadsheet.getSheetByName(sheetName);
+      const cell = sheet.getRange(cellA1Notation);
       cell.clearNote();
       SpreadsheetApp.flush();
       resolve();

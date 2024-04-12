@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@mui/material';
+import { Button, TextField, Box } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 import { serverFunctions } from '../../utils/serverFunctions';
@@ -10,6 +10,7 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
   const [loadingState, setLoadingState] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -42,7 +43,13 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
 
     setErrorMessage('');
     try {
-      const additionalData = { formula }; // Store name here, implement logic and client side code
+      const additionalData = { formula, name };
+
+      if (!name) {
+        setErrorMessage('Please choose a short name for your output');
+        setLoadingState(false);
+        return;
+      }
 
       // Check if the cell is already in the state
       const isCellInState = appState.some(
@@ -74,6 +81,16 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
       }}
     >
       <p>Selection: {selectedCell}</p>
+      <div className="distr-outputs">
+        <TextField
+          type="text"
+          size="small"
+          label="Output name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <Box mt={2} mb={2} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <LoadingButton
         variant="text"

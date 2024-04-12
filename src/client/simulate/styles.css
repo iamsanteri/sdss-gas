@@ -19,6 +19,16 @@ button .create-input:hover {
     gap: 12px;
 }
 
+.distr-ouputs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .sdss-icon {
     width: 20%;
+}
+
+.label-text {
+    font-size: 0.9rem !important;
 }
