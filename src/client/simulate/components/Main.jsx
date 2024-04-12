@@ -180,6 +180,7 @@ const Main = () => {
           startIcon={<Add />}
           disableElevation
           onClick={() => showInputPane()}
+          disabled={isSimulating}
         >
           Create input assumption
         </Button>
@@ -236,6 +237,7 @@ const Main = () => {
           startIcon={<Add />}
           disableElevation
           onClick={() => showOutputPane()}
+          disabled={isSimulating}
         >
           Create forecast output
         </Button>
