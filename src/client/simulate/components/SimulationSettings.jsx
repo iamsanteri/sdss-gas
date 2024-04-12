@@ -31,7 +31,7 @@ const SimulationRunsSelector = ({
                 {
                   name: 'offset',
                   options: {
-                    offset: [0, -50],
+                    offset: [0, -80],
                   },
                 },
               ],
