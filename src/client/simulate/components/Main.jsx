@@ -289,6 +289,7 @@ const Main = () => {
       <SimulationSettings
         numSimulationRuns={numSimulationRuns}
         setNumSimulationRuns={setNumSimulationRuns}
+        isSimulating={isSimulating}
       />
       <Box mt={2} mb={2} />
       <Button

@@ -14,6 +14,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 const SimulationRunsSelector = ({
   numSimulationRuns,
   setNumSimulationRuns,
+  isSimulating,
 }) => {
   const handleChange = (event) => {
     setNumSimulationRuns(Number(event.target.value));
@@ -50,11 +51,13 @@ const SimulationRunsSelector = ({
           value="100"
           control={<Radio />}
           label={<Typography className="label-text">100 (Fast)</Typography>}
+          disabled={isSimulating}
         />
         <FormControlLabel
           value="500"
           control={<Radio />}
           label={<Typography className="label-text">500 (Slow)</Typography>}
+          disabled={isSimulating}
         />
         <FormControlLabel
           value="1000"
@@ -62,6 +65,7 @@ const SimulationRunsSelector = ({
           label={
             <Typography className="label-text">1000 (Very slow)</Typography>
           }
+          disabled={isSimulating}
         />
       </RadioGroup>
     </FormControl>
@@ -71,6 +75,7 @@ const SimulationRunsSelector = ({
 SimulationRunsSelector.propTypes = {
   numSimulationRuns: PropTypes.number.isRequired,
   setNumSimulationRuns: PropTypes.func.isRequired,
+  isSimulating: PropTypes.bool.isRequired,
 };
 
 export default SimulationRunsSelector;
