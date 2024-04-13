@@ -343,7 +343,7 @@ const Main = () => {
           </Alert>
           <Box mt={2} mb={2} />
           <Alert severity="warning">
-            Do not delete the newly created hidden sheet during simulation,
+            Do&apos;t delete the newly created hidden sheet during simulation,
             that&apos;s where your full output is presented.
           </Alert>
         </Box>
