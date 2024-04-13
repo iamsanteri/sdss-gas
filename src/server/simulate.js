@@ -36,10 +36,10 @@ function sampleFromDistribution(distributionType, additionalData) {
 function writeUserNote(hiddenSheet, lastColumn) {
   const userNote = [
     'Automatic note:',
-    'Each row is one simulation run or a scenario. You can use the full output data to the left for drawing desired figures or export for visualization in other software.',
+    'Each row is a single simulation run or a scenario. You can use the full output data on the left for drawing desired figures or export for visualization in other software.',
     'If you need more than 1000 runs, you can rename this sheet and run simulations multiple times while keeping your previous data.',
     'As with additional distributions or other functionality, improved analytics and visualizations are coming soon and will be released in the future.',
-    'If you have any feedback or would like to wishlist some features, please let me know by emailing your ideas to: santeri@simdss.com',
+    'If you have any feedback or would like to wishlist some features, please let me know by email santeri@simdss.com',
   ];
 
   // Write each line of the user note to the spreadsheet, starting two cells to the right of the last column
@@ -66,7 +66,10 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
     .addRange(dataRange)
     .setChartType(Charts.ChartType.HISTOGRAM)
     .setOption('title', `Example created by system: ${title} histogram`)
-    .setOption('hAxis.title', 'Values of output variable grouped into bins')
+    .setOption(
+      'hAxis.title',
+      'Samples from one of your chosen outputs grouped into bins'
+    )
     .setOption('vAxis.title', 'Frequency');
 
   // Calculate the position for the chart

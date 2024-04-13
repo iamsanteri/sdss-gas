@@ -5,7 +5,7 @@ export const onOpen = () => {
     .addItem('Sheet Editor (Bootstrap)', 'openDialogBootstrap')
     .addItem('Sheet Editor (MUI)', 'openDialogMUI')
     .addItem('Sheet Editor (Tailwind CSS)', 'openDialogTailwindCSS')
-    .addItem('Simulate', 'openSimulate');
+    .addItem('Simulate (Beta)', 'openSimulate');
 
   menu.addToUi();
 };
@@ -39,7 +39,8 @@ export const openDialogTailwindCSS = () => {
 };
 
 export const openSimulate = () => {
-  const html =
-    HtmlService.createHtmlOutputFromFile('simulate').setTitle('Simulate DSS');
+  const html = HtmlService.createHtmlOutputFromFile('simulate').setTitle(
+    'Simulate DSS (Beta)'
+  );
   SpreadsheetApp.getUi().showSidebar(html);
 };
