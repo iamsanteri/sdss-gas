@@ -295,7 +295,6 @@ const Main = () => {
           );
         })}
       </List>
-      <Box mt={2} mb={2} />
       <SimulationSettings
         numSimulationRuns={numSimulationRuns}
         setNumSimulationRuns={setNumSimulationRuns}
@@ -344,7 +343,7 @@ const Main = () => {
           <Box mt={2} mb={2} />
           <Alert severity="warning">
             Don&apos;t delete the newly created hidden sheet during simulation,
-            that&apos;s where your full output is presented.
+            that&apos;s where your output will be presented.
           </Alert>
         </Box>
       ) : null}

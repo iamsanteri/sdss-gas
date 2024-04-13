@@ -30,5 +30,9 @@ button .create-input:hover {
 }
 
 .label-text {
-    font-size: 0.9rem !important;
+    font-size: 1rem !important;
+}
+
+.simulation-settings {
+    font-size: 20rem !important;
 }

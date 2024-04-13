@@ -30,16 +30,16 @@ function sampleFromDistribution(distributionType, additionalData) {
     default:
       throw new Error(`Invalid distribution type: ${distributionType}`);
   }
-  return singleDraw;
+  return Number(singleDraw.toFixed(4)); // Adjust number of decimals used in simulation
 }
 
 function writeUserNote(hiddenSheet, lastColumn) {
   const userNote = [
     'Automatic note:',
-    'Each row is a single simulation run or a scenario. You can use the full output data on the left for drawing desired figures or export for visualization in other software.',
-    'If you need more than 1000 runs, you can rename this sheet and run simulations multiple times while keeping your previous data.',
-    'As with additional distributions or other functionality, improved analytics and visualizations are coming soon and will be released in the future.',
-    'If you have any feedback or would like to wishlist some features, please let me know by email santeri@simdss.com',
+    'Each row is a single simulation run or a scenario. You can use the full output data on the left to draw desired figures or export it for visualization in other software.',
+    'If you need more than 1000 runs, you can rename this sheet and run new simulation while keeping your previous data.',
+    'Additional distributions or other functionality, as well as improved analytics and visualizations are coming soon and are planned to be released in the future.',
+    'If you have any feedback or would like to add something to the wishlist, please let me know by emailing me: santeri@simdss.com',
   ];
 
   // Write each line of the user note to the spreadsheet, starting two cells to the right of the last column
