@@ -23,8 +23,8 @@ import SimulationSettings from './SimulationSettings';
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const Main = () => {
-  const [errorNotif, setErrorNotif] = useState(null);
   const [appState, setAppState] = useState([]);
+  const [errorNotif, setErrorNotif] = useState(null);
   const [activePane, setActivePane] = useState(null);
   const [isSimulating, setIsSimulating] = useState(false);
   const [numSimulationRuns, setNumSimulationRuns] = useState(100);
@@ -137,6 +137,7 @@ const Main = () => {
 
   const launchSimulation = () => {
     setIsSimulating(true);
+    setErrorNotif(null);
     serverFunctions
       .runSimulation(appState, numSimulationRuns)
       .then(() => {
