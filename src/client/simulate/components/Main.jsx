@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
-import StopRoundedIcon from '@mui/icons-material/StopRounded';
+// DISABLED import StopRoundedIcon from '@mui/icons-material/StopRounded';
 
 import { Add, Delete } from '@mui/icons-material';
 

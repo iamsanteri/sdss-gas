@@ -80,10 +80,6 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
   sheet.insertChart(chartBuilder.build());
 }
 
-export const stopSimulation = () => {
-  stopSimulationFlag = true;
-};
-
 // eslint-disable-next-line import/prefer-default-export
 export const runSimulation = (appState, numSimulationRuns) => {
   return new Promise((resolve, reject) => {
@@ -116,10 +112,6 @@ export const runSimulation = (appState, numSimulationRuns) => {
 
       for (let i = 0; i < numSimulationRuns; i += 1) {
         const thisRunSampledValues = [];
-        if (stopSimulationFlag === true) {
-          reject(new Error('Simulation was stopped'));
-          return;
-        }
 
         appState.forEach((variable) => {
           const { type, cellNotation, sheetName, additionalData } = variable;
