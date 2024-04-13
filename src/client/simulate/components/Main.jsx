@@ -338,7 +338,7 @@ const Main = () => {
         <Box mt={2} mb={2}>
           <Alert severity="info">
             Unfortunately, at this time you cannot pause or stop the simulation
-            when running.
+            while running.
           </Alert>
           <Box mt={2} mb={2} />
           <Alert severity="warning">

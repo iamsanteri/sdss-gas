@@ -5,6 +5,9 @@ import { normalDistribution } from './distributions/normalContinuous';
 /* Define a function to handle the distribution sampling. 
   For server-side add new imported distributions here */
 
+// Define the number of decimals used in simulation for both inputs and outputs
+const settingDecimals = 4;
+
 function sampleFromDistribution(distributionType, additionalData) {
   let singleDraw;
   switch (distributionType) {
@@ -30,7 +33,7 @@ function sampleFromDistribution(distributionType, additionalData) {
     default:
       throw new Error(`Invalid distribution type: ${distributionType}`);
   }
-  return Number(singleDraw.toFixed(4)); // Adjust number of decimals used in simulation
+  return Number(singleDraw.toFixed(settingDecimals)); // Adjust number of decimals used in simulation
 }
 
 function writeUserNote(hiddenSheet, lastColumn) {
@@ -65,7 +68,7 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
   chartBuilder
     .addRange(dataRange)
     .setChartType(Charts.ChartType.HISTOGRAM)
-    .setOption('title', `Example created by system: ${title} histogram`)
+    .setOption('title', `Example outcome chart: ${title} histogram`)
     .setOption(
       'hAxis.title',
       'Samples from one of your chosen outputs grouped into bins'
@@ -165,9 +168,15 @@ export const runSimulation = (appState, numSimulationRuns) => {
             reject(new Error(`No sheet found with name ${sheetName}`));
             return;
           }
-          const singleForecastedValue = forecastSheet
+          let singleForecastedValue = forecastSheet
             .getRange(cellNotation)
             .getValue();
+
+          // Adjust number of decimals for output variables
+          singleForecastedValue = Number(
+            singleForecastedValue.toFixed(settingDecimals)
+          );
+
           thisRunOutputValues.push(singleForecastedValue);
           if (i === 0) {
             headers.push(`${additionalData.name}`);
