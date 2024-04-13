@@ -65,7 +65,7 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
   chartBuilder
     .addRange(dataRange)
     .setChartType(Charts.ChartType.HISTOGRAM)
-    .setOption('title', `Example created by the system | ${title} histogram`)
+    .setOption('title', `Example created by system: ${title} histogram`)
     .setOption('hAxis.title', 'Value')
     .setOption('vAxis.title', 'Frequency');
 
@@ -79,6 +79,10 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
   // Insert the chart into the sheet
   sheet.insertChart(chartBuilder.build());
 }
+
+export const stopSimulation = () => {
+  stopSimulationFlag = true;
+};
 
 // eslint-disable-next-line import/prefer-default-export
 export const runSimulation = (appState, numSimulationRuns) => {
@@ -112,6 +116,10 @@ export const runSimulation = (appState, numSimulationRuns) => {
 
       for (let i = 0; i < numSimulationRuns; i += 1) {
         const thisRunSampledValues = [];
+        if (stopSimulationFlag === true) {
+          reject(new Error('Simulation was stopped'));
+          return;
+        }
 
         appState.forEach((variable) => {
           const { type, cellNotation, sheetName, additionalData } = variable;
@@ -143,6 +151,15 @@ export const runSimulation = (appState, numSimulationRuns) => {
         const outputVariables = appState.filter(
           (variable) => variable.type === 'output'
         );
+
+        if (!hiddenSheet) {
+          reject(
+            new Error(
+              'The simulation output presentation was interrupted because a sheet was deleted during simulation.'
+            )
+          );
+          return;
+        }
 
         outputVariables.forEach((outputVariable) => {
           const { cellNotation, sheetName, additionalData } = outputVariable;

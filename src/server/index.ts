@@ -28,12 +28,13 @@ import {
   getSelectedCell,
   setCellNote,
   clearCellNote,
-  getCellFormula
+  getCellFormula,
 } from './cells';
 
 // SIMULATION LOGIC
 import { 
-  runSimulation
+  runSimulation,
+  stopSimulation
 } from './simulate';
 
 // PUBLIC FUNCTIONS MUST BE EXPORTED AS NAMED EXPORTS
@@ -56,4 +57,5 @@ export {
   clearCellNote,
   getCellFormula,
   runSimulation,
+  stopSimulation,
 };

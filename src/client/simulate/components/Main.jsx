@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Button,
   Box,
+  Alert,
   List,
   ListItem,
   ListItemText,
@@ -11,6 +12,7 @@ import {
 } from '@mui/material';
 
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import StopRoundedIcon from '@mui/icons-material/StopRounded';
 
 import { Add, Delete } from '@mui/icons-material';
 
@@ -21,6 +23,7 @@ import SimulationSettings from './SimulationSettings';
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const Main = () => {
+  const [errorNotif, setErrorNotif] = useState(null);
   const [appState, setAppState] = useState([]);
   const [activePane, setActivePane] = useState(null);
   const [isSimulating, setIsSimulating] = useState(false);
@@ -65,7 +68,7 @@ const Main = () => {
       const { distributionType } = additionalDataObj;
 
       if (varType === 'input' && !distributionType) {
-        console.error(
+        setErrorNotif(
           'Error: No distribution type selected for input variable'
         );
         reject(new Error('No distribution type selected for input variable'));
@@ -101,7 +104,7 @@ const Main = () => {
           resolve();
         })
         .catch((error) => {
-          console.error('Error:', error);
+          setErrorNotif(error);
           reject(error);
         });
     });
@@ -128,7 +131,7 @@ const Main = () => {
         setLoadingDeleteState(false);
       })
       .catch((error) => {
-        console.error('Error:', error);
+        setErrorNotif(error);
       });
   };
 
@@ -140,10 +143,17 @@ const Main = () => {
         setIsSimulating(false);
       })
       .catch((error) => {
-        console.error('An error occurred during the simulation:', error);
+        const message = `Simulation ran into issues - Try to re-run. ${error}`;
+        setErrorNotif(message);
         setIsSimulating(false);
       });
   };
+
+  // DISABLED
+  // const stopSimulation = () => {
+  //   setIsSimulating(false);
+  //   serverFunctions.stopSimulation();
+  // };
 
   useEffect(() => {
     const hasInput = appState.some((item) => item.type === 'input');
@@ -292,6 +302,8 @@ const Main = () => {
         isSimulating={isSimulating}
       />
       <Box mt={2} mb={2} />
+      {errorNotif && <p style={{ color: 'red' }}>{errorNotif}</p>}
+      <Box mt={2} mb={2} />
       <Button
         variant="contained"
         color="success"
@@ -309,6 +321,33 @@ const Main = () => {
       >
         {isSimulating ? 'Simulating' : 'Start Simulation'}
       </Button>
+      {/* DISABLED
+      <Box mt={2} mb={2} />
+      <Button
+        variant="contained"
+        color="secondary"
+        size="small"
+        disableElevation
+        startIcon={<StopRoundedIcon />}
+        disabled={!isSimulating}
+        onClick={stopSimulation}
+      >
+        Stop
+      </Button>
+      */}
+      {isSimulating ? (
+        <Box mt={2} mb={2}>
+          <Alert severity="info">
+            Unfortunately, at this time you cannot pause or stop the simulation
+            when running.
+          </Alert>
+          <Box mt={2} mb={2} />
+          <Alert severity="warning">
+            Do not delete the newly created hidden sheet during simulation,
+            that&apos;s where your outputs are presented.
+          </Alert>
+        </Box>
+      ) : null}
     </div>
   );
 };
