@@ -65,7 +65,7 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
   chartBuilder
     .addRange(dataRange)
     .setChartType(Charts.ChartType.HISTOGRAM)
-    .setOption('title', `Example created by system: Histogram of ${title}`)
+    .setOption('title', `Example created by system: Histogram for ${title}`)
     .setOption('hAxis.title', 'Value')
     .setOption('vAxis.title', 'Frequency');
 
