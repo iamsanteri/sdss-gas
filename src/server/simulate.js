@@ -66,7 +66,7 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
     .addRange(dataRange)
     .setChartType(Charts.ChartType.HISTOGRAM)
     .setOption('title', `Example created by system: ${title} histogram`)
-    .setOption('hAxis.title', 'Value')
+    .setOption('hAxis.title', 'Values of output variable grouped into bins')
     .setOption('vAxis.title', 'Frequency');
 
   // Calculate the position for the chart
