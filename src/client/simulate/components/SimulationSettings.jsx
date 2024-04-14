@@ -103,7 +103,7 @@ const SimulationRunsSelector = ({
                   {
                     name: 'offset',
                     options: {
-                      offset: [0, 150], // Change this to adjust the position
+                      offset: [0, 100], // Change this to adjust the position
                     },
                   },
                 ],
@@ -122,18 +122,18 @@ const SimulationRunsSelector = ({
                 Define correlations
               </Button>
             </div>
-            <Box mt={2} mb={2} />
-            <div style={{ cursor: 'not-allowed' }}>
-              <FormControlLabel
-                control={<Switch disabled />}
-                label="Include sensitivity analysis"
-              />
-              <FormControlLabel
-                control={<Switch disabled />}
-                label="Include detailed analytics"
-              />
-            </div>
           </Tooltip>
+          <Box mt={2} mb={2} />
+          <div style={{ cursor: 'not-allowed' }}>
+            <FormControlLabel
+              control={<Switch disabled />}
+              label="Include sensitivity analysis"
+            />
+            <FormControlLabel
+              control={<Switch disabled />}
+              label="Include detailed analytics"
+            />
+          </div>
         </AccordionDetails>
       </Accordion>
     </div>

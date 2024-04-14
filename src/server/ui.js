@@ -1,6 +1,6 @@
 export const onOpen = () => {
   const menu = SpreadsheetApp.getUi()
-    .createMenu('Simulate') // edit me!
+    .createMenu('Simulation') // edit me!
     .addItem('Sheet Editor', 'openDialog')
     .addItem('Sheet Editor (Bootstrap)', 'openDialogBootstrap')
     .addItem('Sheet Editor (MUI)', 'openDialogMUI')

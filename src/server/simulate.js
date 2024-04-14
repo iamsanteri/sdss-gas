@@ -86,6 +86,20 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
   sheet.insertChart(chartBuilder.build());
 }
 
+// Generate output statistics
+function calculateOutputStatistics(values, name) {
+  values.sort((a, b) => a - b); // For median calculation
+  const sum = values.reduce((a, b) => a + b, 0);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const avg = sum / values.length;
+  return {
+    name,
+    min,
+    max,
+    average: avg,
+  };
+}
 // eslint-disable-next-line import/prefer-default-export
 export const runSimulation = (appState, numSimulationRuns) => {
   return new Promise((resolve, reject) => {
@@ -116,9 +130,17 @@ export const runSimulation = (appState, numSimulationRuns) => {
         (variable) => variable.type === 'output'
       );
 
+      const outputValues = appState
+        .filter((variable) => variable.type === 'output')
+        .map((variable) => ({
+          values: [],
+          additionalData: variable.additionalData,
+        }));
+
       for (let i = 0; i < numSimulationRuns; i += 1) {
         const thisRunSampledValues = [];
 
+        let outputIndex = 0;
         appState.forEach((variable) => {
           const { type, cellNotation, sheetName, additionalData } = variable;
 
@@ -139,6 +161,23 @@ export const runSimulation = (appState, numSimulationRuns) => {
             if (i === 0) {
               headers.push(`Input ${cellNotation}`);
             }
+          } else if (type === 'output') {
+            const sheet =
+              SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+            if (!sheet) {
+              reject(new Error(`No sheet found with name ${sheetName}`));
+              return;
+            }
+
+            let singleForecastedValue = sheet.getRange(cellNotation).getValue();
+
+            // Adjust number of decimals for output variables
+            singleForecastedValue = Number(
+              singleForecastedValue.toFixed(settingDecimals)
+            );
+
+            outputValues[outputIndex].values.push(singleForecastedValue);
+            outputIndex += 1;
           }
         });
 
@@ -216,7 +255,22 @@ export const runSimulation = (appState, numSimulationRuns) => {
         firstOutputTitle
       );
 
-      resolve();
+      const outputStatistics = outputValues.map(
+        ({ values, additionalData }, index) => {
+          if (!additionalData || typeof additionalData.name === 'undefined') {
+            console.error(
+              `Invalid additional data for output variable at index ${index}`
+            );
+            return null;
+          }
+
+          return calculateOutputStatistics(values, additionalData.name);
+        }
+      );
+
+      resolve({
+        statistics: outputStatistics,
+      });
     } catch (error) {
       reject(error);
     }

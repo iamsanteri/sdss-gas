@@ -140,8 +140,9 @@ const Main = () => {
     setErrorNotif(null);
     serverFunctions
       .runSimulation(appState, numSimulationRuns)
-      .then(() => {
+      .then((resolvedStats) => {
         setIsSimulating(false);
+        console.log(resolvedStats);
       })
       .catch((error) => {
         const message = `Simulation ran into issues - Try to re-run. ${error}`;
