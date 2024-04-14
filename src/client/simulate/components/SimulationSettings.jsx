@@ -96,7 +96,7 @@ const SimulationRunsSelector = ({
           </FormControl>
           <Box mt={2} mb={2} />
           <Tooltip
-            title="Defining correlations and sensitivity analysis are planned in the future."
+            title="Defining correlations and improved outputs are planned in the future."
             PopperProps={{
               popperOptions: {
                 modifiers: [
