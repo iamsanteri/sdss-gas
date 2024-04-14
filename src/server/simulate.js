@@ -92,12 +92,12 @@ function calculateOutputStatistics(values, name) {
   const sum = values.reduce((a, b) => a + b, 0);
   const min = Math.min(...values);
   const max = Math.max(...values);
-  const avg = sum / values.length;
+  const mean = sum / values.length;
   return {
     name,
     min,
     max,
-    average: avg,
+    mean,
   };
 }
 // eslint-disable-next-line import/prefer-default-export
