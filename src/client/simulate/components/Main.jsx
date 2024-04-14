@@ -356,7 +356,7 @@ const Main = () => {
         disableElevation
         onClick={resetSimulation}
         style={{ marginLeft: '5px' }}
-        disabled={isSimulating} // Disable button when isSimulating is true
+        disabled={isSimulating || !isReadyToSimulate} // Disable button when isSimulating is true or isReadyToSimulate is false
       >
         Reset
       </Button>
