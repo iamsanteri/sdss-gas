@@ -11,7 +11,8 @@ import {
 // STATE PERSISTENCE
 import { 
   saveSimData, 
-  loadSimData  
+  loadSimData,
+  resetSimData,
 } from './state';
 
 // SHEET OPERATIONS
@@ -51,6 +52,7 @@ export {
   setActiveSheet,
   saveSimData,
   loadSimData,
+  resetSimData,
   getSelectedCell,
   getSheetNameOfSelectedCell,
   setCellNote,

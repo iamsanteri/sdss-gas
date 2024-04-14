@@ -20,6 +20,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
   const [additionalData, setAdditionalData] = useState({});
   const [loadingState, setLoadingState] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [finalSelectedCell, setFinalSelectedCell] = useState(defaultCellValue);
 
   const handleInputChange = ({ name, value, distributionType }) => {
     setAdditionalData((prevData) => ({ ...prevData, [name]: value }));
@@ -47,6 +48,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
   const acceptInput = async (event) => {
     event.preventDefault();
     setLoadingState(true);
+    setFinalSelectedCell(selectedCell);
     try {
       // Check whether inputs are valid
       let validationError;
@@ -106,7 +108,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
 
   return (
     <form onSubmit={acceptInput}>
-      <p>Selection: {selectedCell}</p>
+      <p>Selection: {loadingState ? finalSelectedCell : selectedCell}</p>
       <DistrSelection appState={appState} onInputChange={handleInputChange} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
       <Box mt={2} mb={2} />

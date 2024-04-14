@@ -150,6 +150,26 @@ const Main = () => {
       });
   };
 
+  const resetSimulation = () => {
+    // Reset state
+    setAppState([]);
+    setErrorNotif(null);
+    setActivePane(null);
+    setIsSimulating(false);
+    setNumSimulationRuns(100);
+    setIsReadyToSimulate(false);
+    setLoadingDeleteState(false);
+
+    // Clear notes
+    appState.forEach((variable) => {
+      const { cellNotation, sheetName } = variable;
+      serverFunctions.clearCellNote(sheetName, cellNotation);
+    });
+
+    // Clear storage
+    serverFunctions.resetSimData();
+  };
+
   // DISABLED
   // const stopSimulation = () => {
   //   setIsSimulating(false);
@@ -165,7 +185,15 @@ const Main = () => {
 
   useEffect(() => {
     serverFunctions.loadSimData().then((data) => {
-      setAppState(data);
+      if (Array.isArray(data)) {
+        setAppState(data);
+      } else {
+        console.error(
+          'loadSimData did not return an array. Setting it now',
+          data
+        );
+        setAppState([]); // Set appState to an empty array as a fallback
+      }
     });
   }, []);
 
@@ -321,6 +349,17 @@ const Main = () => {
       >
         {isSimulating ? 'Simulating' : 'Start Simulation'}
       </Button>
+      <Button
+        variant="text"
+        color="error"
+        size="small"
+        disableElevation
+        onClick={resetSimulation}
+        style={{ marginLeft: '5px' }}
+        disabled={isSimulating} // Disable button when isSimulating is true
+      >
+        Reset
+      </Button>
       {/* DISABLED
       <Box mt={2} mb={2} />
       <Button
@@ -338,8 +377,8 @@ const Main = () => {
       {isSimulating ? (
         <Box mt={2} mb={2}>
           <Alert severity="info">
-            Unfortunately, at this time you cannot pause or stop the simulation
-            while running.
+            Currently there is no option to pause or stop the simulation while
+            running.
           </Alert>
           <Box mt={2} mb={2} />
           <Alert severity="warning">

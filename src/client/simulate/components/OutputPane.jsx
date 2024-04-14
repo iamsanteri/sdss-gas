@@ -8,6 +8,7 @@ import { serverFunctions } from '../../utils/serverFunctions';
 const OutputPane = ({ onHide, onAccept, appState }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
+  const [finalSelectedCell, setFinalSelectedCell] = useState(defaultCellValue);
   const [loadingState, setLoadingState] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [name, setName] = useState('');
@@ -31,6 +32,7 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
 
   const acceptOutput = async () => {
     setLoadingState(true);
+    setFinalSelectedCell(selectedCell);
 
     const sheetName = await serverFunctions.getSheetNameOfSelectedCell();
     const formula = await serverFunctions.getCellFormula(selectedCell);
@@ -80,7 +82,7 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
         acceptOutput();
       }}
     >
-      <p>Selection: {selectedCell}</p>
+      <p>Selection: {loadingState ? finalSelectedCell : selectedCell}</p>
       <div className="distr-outputs">
         <TextField
           type="text"

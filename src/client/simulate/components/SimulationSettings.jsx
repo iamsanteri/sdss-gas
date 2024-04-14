@@ -45,13 +45,13 @@ const SimulationRunsSelector = ({
               Number of simulation runs
               <IconButton aria-label="info">
                 <Tooltip
-                  title="Simulation speed is limited by compute and current API"
+                  title="Simulation speed is limited by current compute and API limitations."
                   PopperProps={{
                     modifiers: [
                       {
                         name: 'offset',
                         options: {
-                          offset: [0, -180],
+                          offset: [0, -220],
                         },
                       },
                     ],
@@ -96,31 +96,20 @@ const SimulationRunsSelector = ({
           </FormControl>
           <Box mt={2} mb={2} />
           <Tooltip
-            title="Sensitivity analysis and ability to define correlations will be available in the future."
+            title="Defining correlations and sensitivity analysis are planned in the future."
             PopperProps={{
               popperOptions: {
                 modifiers: [
                   {
                     name: 'offset',
                     options: {
-                      offset: [0, 60], // Change this to adjust the position
+                      offset: [0, 150], // Change this to adjust the position
                     },
                   },
                 ],
               },
             }}
           >
-            <div style={{ cursor: 'not-allowed' }}>
-              <FormControlLabel
-                control={<Switch disabled />}
-                label="Include sensitivity analysis"
-              />
-              <FormControlLabel
-                control={<Switch disabled />}
-                label="Generate detailed analytics"
-              />
-            </div>
-            <Box mt={2} mb={2} />
             <div style={{ cursor: 'not-allowed' }}>
               <Button
                 variant="contained"
@@ -132,6 +121,17 @@ const SimulationRunsSelector = ({
               >
                 Define correlations
               </Button>
+            </div>
+            <Box mt={2} mb={2} />
+            <div style={{ cursor: 'not-allowed' }}>
+              <FormControlLabel
+                control={<Switch disabled />}
+                label="Include sensitivity analysis"
+              />
+              <FormControlLabel
+                control={<Switch disabled />}
+                label="Include detailed analytics"
+              />
             </div>
           </Tooltip>
         </AccordionDetails>

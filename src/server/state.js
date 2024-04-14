@@ -45,7 +45,19 @@ export const loadSimData = () => {
     try {
       const documentProperties = PropertiesService.getDocumentProperties();
       const savedSimData = documentProperties.getProperty('simData');
-      resolve(savedSimData ? JSON.parse(savedSimData) : {});
+      resolve(savedSimData ? JSON.parse(savedSimData) : []);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const resetSimData = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      const documentProperties = PropertiesService.getDocumentProperties();
+      documentProperties.setProperty('simData', JSON.stringify([]));
+      resolve();
     } catch (error) {
       reject(error);
     }

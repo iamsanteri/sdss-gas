@@ -1,11 +1,11 @@
 export const onOpen = () => {
   const menu = SpreadsheetApp.getUi()
-    .createMenu('Simulate DSS (Beta)') // edit me!
+    .createMenu('Simulate') // edit me!
     .addItem('Sheet Editor', 'openDialog')
     .addItem('Sheet Editor (Bootstrap)', 'openDialogBootstrap')
     .addItem('Sheet Editor (MUI)', 'openDialogMUI')
     .addItem('Sheet Editor (Tailwind CSS)', 'openDialogTailwindCSS')
-    .addItem('Simulate (Beta)', 'openSimulate');
+    .addItem('Simulate DSS (Beta)', 'openSimulate');
 
   menu.addToUi();
 };
