@@ -71,7 +71,7 @@ function createHistogram(sheet, firstOutputColumn, startRow, title) {
     .setOption('title', `Example outcome chart: ${title} histogram`)
     .setOption(
       'hAxis.title',
-      'Samples from one of your chosen outputs grouped into bins'
+      'Samples from one of your outputs grouped into bins'
     )
     .setOption('vAxis.title', 'Frequency');
 
