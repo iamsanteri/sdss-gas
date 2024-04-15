@@ -66,11 +66,12 @@ const DistrSelection = ({ onInputChange }) => {
         </Tooltip>
         <Tooltip title="More distributions (coming soon...)">
           <Tab
-            icon={<SDSSIcon4 style={{ opacity: 0.5 }} />}
+            icon={<SDSSIcon4 />}
             aria-label="More distributions (coming soon...)"
             className="disabled-tab"
             style={{
               minWidth: 'auto',
+              opacity: 0.5,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
