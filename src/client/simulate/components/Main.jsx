@@ -45,8 +45,11 @@ const Main = () => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#3d9400', // replace with your color
+        main: '#4c915c',
       },
+    },
+    typography: {
+      fontSize: 12,
     },
   });
 
@@ -286,11 +289,7 @@ const Main = () => {
           message={snackbarMessage}
           autoHideDuration={4000}
           action={
-            <Button
-              className="close-snackbar"
-              size="small"
-              onClick={handleSnackbarClose}
-            >
+            <Button size="small" color="primary" onClick={handleSnackbarClose}>
               CLOSE
             </Button>
           }

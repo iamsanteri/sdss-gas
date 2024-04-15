@@ -90,8 +90,7 @@ const DistrSelection = ({ onInputChange }) => {
         )}
         {selectedDistr === 3 && (
           <Typography variant="body1" sx={{ color: 'grey' }}>
-            More distributions including discrete variants are planned in the
-            future.
+            More distributions and discrete variants are planned in the future.
           </Typography>
         )}
       </Box>

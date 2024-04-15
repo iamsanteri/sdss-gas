@@ -1,34 +1,7 @@
-
-button .create-input {
-    background-color: #43A047 !important;
-}
-
-button .create-input:hover {
-    background-color: #38853B !important;
-}
-
-.distr-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
 .distr-ouputs {
     display: flex;
     flex-direction: column;
     gap: 12px;
-}
-
-.label-text {
-    font-size: 1rem !important;
-}
-
-.simulation-settings {
-    font-size: 20rem !important;
-}
-
-.close-snackbar {
-    color: #2e7d32 !important;
 }
 
 .disabled-tab {
