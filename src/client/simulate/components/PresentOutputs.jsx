@@ -7,6 +7,7 @@ import {
   Box,
   ThemeProvider,
   createTheme,
+  Alert,
 } from '@mui/material';
 
 import { serverFunctions } from '../../utils/serverFunctions';
@@ -67,6 +68,9 @@ const PresentOutputs = ({
         >
           Go to full output
         </Button>
+        <Box mt={2} mb={2}>
+          <Alert severity="info">Improved analytics are planned.</Alert>
+        </Box>
       </div>
     </ThemeProvider>
   );
