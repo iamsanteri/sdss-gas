@@ -9,6 +9,7 @@ import {
   ListItemSecondaryAction,
   CircularProgress,
   IconButton,
+  Snackbar,
 } from '@mui/material';
 
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
@@ -27,12 +28,30 @@ const Main = () => {
   const [appState, setAppState] = useState([]);
   const [errorNotif, setErrorNotif] = useState(null);
   const [activePane, setActivePane] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const [numSimulationRuns, setNumSimulationRuns] = useState(100);
   const [simulationResults, setSimulationResults] = useState(null);
   const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
   const [showFullOutputClicked, setShowFullOutputClicked] = useState(false);
+
+  const MAX_INPUTS = 3;
+  const MAX_OUTPUTS = 2;
+
+  const handleSnackbarOpen = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
+  };
 
   // useMemo for Filtering (performance)
   const inputVariables = useMemo(
@@ -46,12 +65,28 @@ const Main = () => {
 
   // useCallback for Functions (performance)
   const showInputPane = useCallback(() => {
+    // Check if the limit has been reached
+    if (inputVariables.length >= MAX_INPUTS) {
+      handleSnackbarOpen(
+        'Maximum number of input variables reached for this Beta version.'
+      );
+      return;
+    }
+
     setActivePane('input');
-  }, []);
+  }, [inputVariables]);
 
   const showOutputPane = useCallback(() => {
+    // Check if the limit has been reached
+    if (outputVariables.length >= MAX_OUTPUTS) {
+      handleSnackbarOpen(
+        'Maximum number of output variables reached for this Beta version.'
+      );
+      return;
+    }
+
     setActivePane('output');
-  }, []);
+  }, [outputVariables]);
 
   const hidePane = useCallback(() => {
     setActivePane(null);
@@ -64,6 +99,21 @@ const Main = () => {
     sheetName
   ) => {
     return new Promise((resolve, reject) => {
+      if (
+        (varType === 'input' && inputVariables.length >= MAX_INPUTS) ||
+        (varType === 'output' && outputVariables.length >= MAX_OUTPUTS)
+      ) {
+        handleSnackbarOpen(
+          `Maximum number of ${varType} variables reached for this Beta version.`
+        );
+        reject(
+          new Error(
+            `Maximum number of ${varType} variables reached for this Beta version.`
+          )
+        );
+        return;
+      }
+
       function generateShortID() {
         return Math.random().toString(36).substring(2, 7);
       }
@@ -214,6 +264,22 @@ const Main = () => {
 
   return (
     <div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={snackbarOpen}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        autoHideDuration={4000}
+        action={
+          <Button
+            className="close-snackbar"
+            size="small"
+            onClick={handleSnackbarClose}
+          >
+            CLOSE
+          </Button>
+        }
+      />
       <Box
         display="flex"
         justifyContent="center"

@@ -36,3 +36,7 @@ button .create-input:hover {
 .simulation-settings {
     font-size: 20rem !important;
 }
+
+.close-snackbar {
+    color: #2e7d32 !important;
+}
