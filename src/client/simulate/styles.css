@@ -1,9 +1,3 @@
-html * {
-   font-family: Arial !important;
-   font-size: 0.9rem;
-   zoom: 0.97;  
-   -moz-transform: scale(0.97);
-}
 
 button .create-input {
     background-color: #43A047 !important;
@@ -25,10 +19,6 @@ button .create-input:hover {
     gap: 12px;
 }
 
-.sdss-icon {
-    width: 20%;
-}
-
 .label-text {
     font-size: 1rem !important;
 }
@@ -39,4 +29,8 @@ button .create-input:hover {
 
 .close-snackbar {
     color: #2e7d32 !important;
+}
+
+.disabled-tab {
+    opacity: 0.5;
 }

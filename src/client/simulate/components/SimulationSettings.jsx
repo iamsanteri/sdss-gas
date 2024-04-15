@@ -44,19 +44,7 @@ const SimulationRunsSelector = ({
             <label>
               Number of simulation runs
               <IconButton aria-label="info">
-                <Tooltip
-                  title="Simulation speed is limited by current compute and API limitations."
-                  PopperProps={{
-                    modifiers: [
-                      {
-                        name: 'offset',
-                        options: {
-                          offset: [0, -220],
-                        },
-                      },
-                    ],
-                  }}
-                >
+                <Tooltip title="Simulation speed is limited by current compute and API limitations.">
                   <InfoOutlinedIcon fontSize="small" color="action" />
                 </Tooltip>
               </IconButton>
@@ -95,21 +83,7 @@ const SimulationRunsSelector = ({
             </RadioGroup>
           </FormControl>
           <Box mt={2} mb={2} />
-          <Tooltip
-            title="Defining correlations and improved outputs are planned in the future."
-            PopperProps={{
-              popperOptions: {
-                modifiers: [
-                  {
-                    name: 'offset',
-                    options: {
-                      offset: [0, 100], // Change this to adjust the position
-                    },
-                  },
-                ],
-              },
-            }}
-          >
+          <Tooltip title="Defining correlations and improved outputs are planned in the future.">
             <div style={{ cursor: 'not-allowed' }}>
               <Button
                 variant="contained"
