@@ -141,7 +141,10 @@ const Main = () => {
         },
       };
 
-      const note = varType === 'input' ? 'Input variable' : 'Output variable';
+      const note =
+        varType === 'input'
+          ? 'Simulation: Input variable'
+          : 'Simulation: Output variable';
 
       serverFunctions
         .setCellNote(cellNotation, note)
@@ -212,6 +215,7 @@ const Main = () => {
     setActivePane(null);
     setIsSimulating(false);
     setNumSimulationRuns(100);
+    setSimulationResults(null);
     setIsReadyToSimulate(false);
     setLoadingDeleteState(false);
     setShowFullOutputClicked(false);

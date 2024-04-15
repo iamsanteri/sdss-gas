@@ -53,6 +53,12 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
         return;
       }
 
+      if (name.length > 15) {
+        setErrorMessage('Name must be 15 characters or less');
+        setLoadingState(false);
+        return;
+      }
+
       // Check if the cell is already in the state
       const isCellInState = appState.some(
         (variable) =>
