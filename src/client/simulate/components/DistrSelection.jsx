@@ -190,7 +190,7 @@ const DistrSelection = ({ onInputChange }) => {
 
   return (
     <div>
-      <Tooltip title="Uniform">
+      <Tooltip title="Uniform (continuous)">
         <ButtonBase
           onClick={() => handleClick(1, 'uniformContinuous')}
           style={{
@@ -200,7 +200,7 @@ const DistrSelection = ({ onInputChange }) => {
           <SDSSIcon2 />
         </ButtonBase>
       </Tooltip>
-      <Tooltip title="Triangular">
+      <Tooltip title="Triangular (continuous)">
         <ButtonBase
           onClick={() => handleClick(2, 'triangularContinuous')}
           style={{
@@ -210,7 +210,7 @@ const DistrSelection = ({ onInputChange }) => {
           <SDSSIcon3 />
         </ButtonBase>
       </Tooltip>
-      <Tooltip title="Normal">
+      <Tooltip title="Normal (continuous)">
         <ButtonBase
           onClick={() => handleClick(3, 'normalContinuous')}
           style={{

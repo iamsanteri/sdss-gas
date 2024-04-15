@@ -114,7 +114,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
       <Box mt={2} mb={2} />
       <LoadingButton
         variant="text"
-        color="success"
+        color="primary"
         size="small"
         disableElevation
         type="submit"

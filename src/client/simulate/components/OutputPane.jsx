@@ -102,7 +102,7 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <LoadingButton
         variant="text"
-        color="success"
+        color="primary"
         size="small"
         disableElevation
         type="submit"

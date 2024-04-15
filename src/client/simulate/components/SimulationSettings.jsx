@@ -68,7 +68,7 @@ const SimulationRunsSelector = ({
             >
               <FormControlLabel
                 value="100"
-                control={<Radio color="success" />}
+                control={<Radio color="primary" />}
                 label={
                   <Typography className="label-text">100 (Fast)</Typography>
                 }
@@ -76,7 +76,7 @@ const SimulationRunsSelector = ({
               />
               <FormControlLabel
                 value="500"
-                control={<Radio color="success" />}
+                control={<Radio color="primary" />}
                 label={
                   <Typography className="label-text">500 (Slow)</Typography>
                 }
@@ -84,7 +84,7 @@ const SimulationRunsSelector = ({
               />
               <FormControlLabel
                 value="1000"
-                control={<Radio color="success" />}
+                control={<Radio color="primary" />}
                 label={
                   <Typography className="label-text">
                     1000 (Very slow)
@@ -113,7 +113,7 @@ const SimulationRunsSelector = ({
             <div style={{ cursor: 'not-allowed' }}>
               <Button
                 variant="contained"
-                color="success"
+                color="primary"
                 size="small"
                 startIcon={<AddIcon />}
                 disableElevation
