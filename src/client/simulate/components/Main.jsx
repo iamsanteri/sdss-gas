@@ -19,6 +19,7 @@ import { Add, Delete } from '@mui/icons-material';
 import InputPane from './InputPane';
 import OutputPane from './OutputPane';
 import SimulationSettings from './SimulationSettings';
+import PresentOutputs from './PresentOutputs';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
@@ -28,8 +29,10 @@ const Main = () => {
   const [activePane, setActivePane] = useState(null);
   const [isSimulating, setIsSimulating] = useState(false);
   const [numSimulationRuns, setNumSimulationRuns] = useState(100);
+  const [simulationResults, setSimulationResults] = useState(null);
   const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
+  const [showFullOutputClicked, setShowFullOutputClicked] = useState(false);
 
   // useMemo for Filtering (performance)
   const inputVariables = useMemo(
@@ -142,7 +145,8 @@ const Main = () => {
       .runSimulation(appState, numSimulationRuns)
       .then((resolvedStats) => {
         setIsSimulating(false);
-        console.log(resolvedStats);
+        setShowFullOutputClicked(false);
+        setSimulationResults(resolvedStats.statistics);
       })
       .catch((error) => {
         const message = `Simulation ran into issues - Try to re-run. ${error}`;
@@ -160,6 +164,7 @@ const Main = () => {
     setNumSimulationRuns(100);
     setIsReadyToSimulate(false);
     setLoadingDeleteState(false);
+    setShowFullOutputClicked(false);
 
     // Clear notes
     appState.forEach((variable) => {
@@ -176,6 +181,15 @@ const Main = () => {
   //   setIsSimulating(false);
   //   serverFunctions.stopSimulation();
   // };
+
+  let buttonText;
+  if (simulationResults) {
+    buttonText = 'Re-simulate';
+  } else if (isSimulating) {
+    buttonText = 'Simulating';
+  } else {
+    buttonText = 'Start Simulation';
+  }
 
   useEffect(() => {
     const hasInput = appState.some((item) => item.type === 'input');
@@ -348,7 +362,7 @@ const Main = () => {
         disabled={!isReadyToSimulate || isSimulating}
         onClick={() => launchSimulation()}
       >
-        {isSimulating ? 'Simulating' : 'Start Simulation'}
+        {buttonText}
       </Button>
       <Button
         variant="text"
@@ -375,6 +389,13 @@ const Main = () => {
         Stop
       </Button>
       */}
+      {!isSimulating && simulationResults && !errorNotif && (
+        <PresentOutputs
+          results={simulationResults}
+          showFullOutputClicked={showFullOutputClicked}
+          setShowFullOutputClicked={setShowFullOutputClicked}
+        />
+      )}
       {isSimulating ? (
         <Box mt={2} mb={2}>
           <Alert severity="info">

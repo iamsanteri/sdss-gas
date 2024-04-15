@@ -7,6 +7,7 @@ import { normalDistribution } from './distributions/normalContinuous';
 
 // Define the number of decimals used in simulation for both inputs and outputs
 const settingDecimals = 4;
+const nameOfHiddenSheet = 'HiddenSimulationSheet'; // Remember to define also in sheets.js
 
 function sampleFromDistribution(distributionType, additionalData) {
   let singleDraw;
@@ -108,9 +109,8 @@ export const runSimulation = (appState, numSimulationRuns) => {
       const sampledValuesArray = [];
       const headers = [];
 
-      let hiddenSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-        'HiddenSimulationSheet'
-      );
+      let hiddenSheet =
+        SpreadsheetApp.getActiveSpreadsheet().getSheetByName(nameOfHiddenSheet);
 
       if (hiddenSheet) {
         // Before creating a new histogram, remove any existing charts
@@ -120,9 +120,8 @@ export const runSimulation = (appState, numSimulationRuns) => {
         });
         hiddenSheet.clear();
       } else {
-        hiddenSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(
-          'HiddenSimulationSheet'
-        );
+        hiddenSheet =
+          SpreadsheetApp.getActiveSpreadsheet().insertSheet(nameOfHiddenSheet);
         hiddenSheet.hideSheet();
       }
 

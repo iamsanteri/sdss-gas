@@ -22,6 +22,7 @@ import {
   getSheetsData,
   setActiveSheet,
   getSheetNameOfSelectedCell,
+  goToSimulationOutputSheet,
 } from './sheets';
 
 // CELL OPERATIONS
@@ -50,6 +51,7 @@ export {
   addSheet,
   deleteSheet,
   setActiveSheet,
+  goToSimulationOutputSheet,
   saveSimData,
   loadSimData,
   resetSimData,

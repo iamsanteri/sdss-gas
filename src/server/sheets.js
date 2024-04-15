@@ -1,3 +1,5 @@
+const nameOfHiddenSheet = 'HiddenSimulationSheet'; // Remember to define also in simulate.js
+
 const getSheets = () => SpreadsheetApp.getActive().getSheets();
 
 const getActiveSheetName = () => SpreadsheetApp.getActive().getSheetName();
@@ -34,4 +36,10 @@ export const deleteSheet = (sheetIndex) => {
 export const setActiveSheet = (sheetName) => {
   SpreadsheetApp.getActive().getSheetByName(sheetName).activate();
   return getSheetsData();
+};
+
+export const goToSimulationOutputSheet = () => {
+  SpreadsheetApp.getActiveSpreadsheet()
+    .getSheetByName(nameOfHiddenSheet)
+    .activate();
 };
