@@ -13,6 +13,7 @@ const NormalContinuous = ({ onInputChange }) => {
 
   return (
     <div className="distr-inputs">
+      <p>Normal continuous</p>
       <TextField
         type="number"
         size="small"

@@ -13,6 +13,7 @@ const TriangularContinuous = ({ onInputChange }) => {
 
   return (
     <div className="distr-inputs">
+      <p>Triangular continuous</p>
       <TextField
         type="number"
         size="small"

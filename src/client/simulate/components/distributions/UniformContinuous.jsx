@@ -13,6 +13,7 @@ const UniformContinuous = ({ onInputChange }) => {
 
   return (
     <div className="distr-inputs">
+      <p>Uniform continuous</p>
       <TextField
         type="number"
         size="small"

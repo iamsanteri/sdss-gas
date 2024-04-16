@@ -355,7 +355,7 @@ const Main = () => {
             </Box>
             {activePane !== 'input' && (
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 loading="true"
                 size="small"
@@ -423,7 +423,7 @@ const Main = () => {
             </Box>
             {activePane !== 'output' && (
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 loading="true"
                 size="small"
