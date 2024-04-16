@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
-  ThemeProvider,
-  createTheme,
-  Button,
+  Container,
+  Stack,
   Box,
+  Button,
   Alert,
   List,
   ListItem,
@@ -11,7 +12,7 @@ import {
   ListItemSecondaryAction,
   CircularProgress,
   IconButton,
-  Snackbar,
+  Typography,
 } from '@mui/material';
 
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
@@ -19,6 +20,7 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 import { Add, Delete } from '@mui/icons-material';
 
+import Notifications from './Notifications';
 import InputPane from './InputPane';
 import OutputPane from './OutputPane';
 import SimulationSettings from './SimulationSettings';
@@ -27,43 +29,62 @@ import PresentOutputs from './PresentOutputs';
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const Main = () => {
+  // Top level state
   const [appState, setAppState] = useState([]);
   const [errorNotif, setErrorNotif] = useState(null);
   const [activePane, setActivePane] = useState(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [notifMessage, setNotifMessage] = useState('');
   const [numSimulationRuns, setNumSimulationRuns] = useState(100);
   const [simulationResults, setSimulationResults] = useState(null);
-  const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
+  const [isReadyToSimulate, setIsReadyToSimulate] = useState(true);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
   const [showFullOutputClicked, setShowFullOutputClicked] = useState(false);
 
+  // Client side variable limitation flags
   const MAX_INPUTS = 3;
   const MAX_OUTPUTS = 2;
 
+  // Theme setup
   const theme = createTheme({
     palette: {
       primary: {
         main: '#4c915c',
       },
+      secondary: {
+        main: '#ed1111',
+      },
     },
     typography: {
       fontSize: 12,
+      allVariants: {
+        color: '#202124',
+      },
+      h4: {
+        fontSize: '1.3rem',
+      },
+      h5: {
+        fontSize: '0.95rem',
+      },
+      body1: {
+        fontSize: '0.8rem',
+        color: '#747678',
+      },
     },
   });
 
-  const handleSnackbarOpen = (message) => {
-    setSnackbarMessage(message);
-    setSnackbarOpen(true);
+  const handleNotifOpen = (message) => {
+    setNotifMessage(message);
+    setNotifOpen(true);
   };
 
-  const handleSnackbarClose = (event, reason) => {
+  const handleNotifClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setSnackbarOpen(false);
+    setNotifOpen(false);
   };
 
   // useMemo for Filtering (performance)
@@ -80,7 +101,7 @@ const Main = () => {
   const showInputPane = useCallback(() => {
     // Check if the limit has been reached
     if (inputVariables.length >= MAX_INPUTS) {
-      handleSnackbarOpen(
+      handleNotifOpen(
         'Maximum number of input variables reached for this Beta version.'
       );
       return;
@@ -92,7 +113,7 @@ const Main = () => {
   const showOutputPane = useCallback(() => {
     // Check if the limit has been reached
     if (outputVariables.length >= MAX_OUTPUTS) {
-      handleSnackbarOpen(
+      handleNotifOpen(
         'Maximum number of output variables reached for this Beta version.'
       );
       return;
@@ -116,7 +137,7 @@ const Main = () => {
         (varType === 'input' && inputVariables.length >= MAX_INPUTS) ||
         (varType === 'output' && outputVariables.length >= MAX_OUTPUTS)
       ) {
-        handleSnackbarOpen(
+        handleNotifOpen(
           `Maximum number of ${varType} variables reached for this Beta version.`
         );
         reject(
@@ -280,217 +301,263 @@ const Main = () => {
   }, []);
 
   return (
-    <div>
-      <ThemeProvider theme={theme}>
-        <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={snackbarOpen}
-          onClose={handleSnackbarClose}
-          message={snackbarMessage}
-          autoHideDuration={4000}
-          action={
-            <Button size="small" color="primary" onClick={handleSnackbarClose}>
-              CLOSE
-            </Button>
-          }
-        />
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width="100%"
-          minHeight="24px"
-          mt={2}
-          mb={2}
-        >
-          {loadingDeleteState && <CircularProgress color="primary" size={20} />}
-        </Box>
-        {activePane !== 'input' && (
-          <Button
-            variant="contained"
-            color="primary"
-            loading="true"
-            size="small"
-            startIcon={<Add />}
-            disableElevation
-            onClick={() => showInputPane()}
-            disabled={isSimulating}
+    <ThemeProvider theme={theme}>
+      <Notifications
+        handleNotifClose={handleNotifClose}
+        notifOpen={notifOpen}
+        notifMessage={notifMessage}
+      />
+      <Container disableGutters>
+        <Stack direction="column" justifyContent="flex-start">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            p={1.3}
+            marginTop={1.3}
           >
-            Create input assumption
-          </Button>
-        )}
-        {activePane === 'input' && (
-          <InputPane
-            onHide={hidePane}
-            onAccept={acceptVariable}
-            appState={appState}
-          />
-        )}
-        <List>
-          {inputVariables.map((item) => {
-            const {
-              id,
-              cellNotation,
-              timestamp,
-              type,
-              additionalData,
-              sheetName,
-            } = item;
-            return (
-              <ListItem key={id}>
-                <ListItemText
-                  primary={`${cellNotation} (${sheetName})`}
-                  secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
-                    Object.keys(additionalData).length > 0
-                      ? Object.entries(additionalData)
-                          .map(([key, value]) => `${key}: ${value}`)
-                          .join(', ')
-                      : 'Empty'
-                  }`}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => deleteVariable(id, sheetName)}
-                    disabled={loadingDeleteState}
-                  >
-                    <Delete />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            );
-          })}
-        </List>
-        {activePane !== 'output' && (
-          <Button
-            variant="contained"
-            color="primary"
-            loading="true"
-            size="small"
-            startIcon={<Add />}
-            disableElevation
-            onClick={() => showOutputPane()}
-            disabled={isSimulating}
-          >
-            Create forecast output
-          </Button>
-        )}
-        {activePane === 'output' && (
-          <OutputPane
-            onHide={hidePane}
-            onAccept={acceptVariable}
-            appState={appState}
-          />
-        )}
-        <List>
-          {outputVariables.map((item) => {
-            const {
-              id,
-              cellNotation,
-              timestamp,
-              type,
-              additionalData,
-              sheetName,
-            } = item;
-            return (
-              <ListItem key={id}>
-                <ListItemText
-                  primary={`${cellNotation} (${sheetName}): ${additionalData.name}`}
-                  secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
-                    Object.keys(additionalData).length > 0
-                      ? Object.entries(additionalData)
-                          .map(([key, value]) => `${key}: ${value}`)
-                          .join(', ')
-                      : 'Empty'
-                  }`}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => deleteVariable(id, sheetName)}
-                    disabled={loadingDeleteState}
-                  >
-                    <Delete />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            );
-          })}
-        </List>
-        <SimulationSettings
-          numSimulationRuns={numSimulationRuns}
-          setNumSimulationRuns={setNumSimulationRuns}
-          isSimulating={isSimulating}
-        />
-        <Box mt={2} mb={2} />
-        {errorNotif && <p style={{ color: 'red' }}>{errorNotif}</p>}
-        <Box mt={2} mb={2} />
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          startIcon={
-            isSimulating ? (
-              <CircularProgress size={15} color="inherit" />
-            ) : (
-              <PlayArrowRoundedIcon />
-            )
-          }
-          disableElevation
-          disabled={!isReadyToSimulate || isSimulating}
-          onClick={() => launchSimulation()}
-        >
-          {buttonText}
-        </Button>
-        <Button
-          variant="text"
-          color="error"
-          size="small"
-          disableElevation
-          onClick={resetSimulation}
-          style={{ marginLeft: '5px' }}
-          disabled={isSimulating || !isReadyToSimulate} // Disable button when isSimulating is true or isReadyToSimulate is false
-        >
-          Reset
-        </Button>
-        {/* DISABLED
-      <Box mt={2} mb={2} />
-      <Button
-        variant="contained"
-        color="secondary"
-        size="small"
-        disableElevation
-        startIcon={<StopRoundedIcon />}
-        disabled={!isSimulating}
-        onClick={stopSimulation}
-      >
-        Stop
-      </Button>
-      */}
-        {!isSimulating && simulationResults && !errorNotif && (
-          <PresentOutputs
-            results={simulationResults}
-            showFullOutputClicked={showFullOutputClicked}
-            setShowFullOutputClicked={setShowFullOutputClicked}
-          />
-        )}
-        {isSimulating ? (
-          <Box mt={2} mb={2}>
-            <Alert severity="info">
-              Currently there is no option to pause or stop the simulation while
-              running.
-            </Alert>
-            <Box mt={2} mb={2} />
-            <Alert severity="warning">
-              Don&apos;t delete the newly created hidden sheet during
-              simulation, that&apos;s where your output will be presented.
-            </Alert>
+            <Box position="relative">
+              <Typography variant="h4">Simulate</Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  position: 'absolute',
+                  bottom: -5,
+                  right: -24,
+                }}
+              >
+                Beta
+              </Typography>
+            </Box>
+            {loadingDeleteState && (
+              <CircularProgress
+                color="primary"
+                size={18}
+                sx={{
+                  position: 'absolute',
+                  top: 20,
+                  right: 86,
+                }}
+              />
+            )}
           </Box>
-        ) : null}
-      </ThemeProvider>
-    </div>
+          <Box mt={2}>
+            <Box mb={1.5}>
+              <Typography variant="h5" gutterBottom>
+                Input assumptions
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Create your inputs here. Highlight the cell containing your
+                uncertain value and choose relevant parameters.
+              </Typography>
+            </Box>
+            {activePane !== 'input' && (
+              <Button
+                variant="contained"
+                color="primary"
+                loading="true"
+                size="small"
+                startIcon={<Add />}
+                disableElevation
+                onClick={() => showInputPane()}
+                disabled={isSimulating}
+              >
+                Create
+              </Button>
+            )}
+            {activePane === 'input' && (
+              <InputPane
+                onHide={hidePane}
+                onAccept={acceptVariable}
+                appState={appState}
+              />
+            )}
+            <List>
+              {inputVariables.map((item) => {
+                const {
+                  id,
+                  cellNotation,
+                  timestamp,
+                  type,
+                  additionalData,
+                  sheetName,
+                } = item;
+                return (
+                  <ListItem key={id}>
+                    <ListItemText
+                      primary={`${cellNotation} (${sheetName})`}
+                      secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
+                        Object.keys(additionalData).length > 0
+                          ? Object.entries(additionalData)
+                              .map(([key, value]) => `${key}: ${value}`)
+                              .join(', ')
+                          : 'Empty'
+                      }`}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => deleteVariable(id, sheetName)}
+                        disabled={loadingDeleteState}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Box>
+          <Box mt={2}>
+            <Box mb={1.5}>
+              <Typography variant="h5" gutterBottom>
+                Output assumptions
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Mark your outputs here. Highlight the cell containing a formula
+                which is an output of interest in your model.
+              </Typography>
+            </Box>
+            {activePane !== 'output' && (
+              <Button
+                variant="contained"
+                color="primary"
+                loading="true"
+                size="small"
+                startIcon={<Add />}
+                disableElevation
+                onClick={() => showOutputPane()}
+                disabled={isSimulating}
+              >
+                Create
+              </Button>
+            )}
+            {activePane === 'output' && (
+              <OutputPane
+                onHide={hidePane}
+                onAccept={acceptVariable}
+                appState={appState}
+              />
+            )}
+            <List>
+              {outputVariables.map((item) => {
+                const {
+                  id,
+                  cellNotation,
+                  timestamp,
+                  type,
+                  additionalData,
+                  sheetName,
+                } = item;
+                return (
+                  <ListItem key={id}>
+                    <ListItemText
+                      primary={`${cellNotation} (${sheetName}): ${additionalData.name}`}
+                      secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
+                        Object.keys(additionalData).length > 0
+                          ? Object.entries(additionalData)
+                              .map(([key, value]) => `${key}: ${value}`)
+                              .join(', ')
+                          : 'Empty'
+                      }`}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => deleteVariable(id, sheetName)}
+                        disabled={loadingDeleteState}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Box>
+          <Box mt={2} mb={2}>
+            <SimulationSettings
+              numSimulationRuns={numSimulationRuns}
+              setNumSimulationRuns={setNumSimulationRuns}
+              isSimulating={isSimulating}
+            />
+          </Box>
+          <Box mt={2} mb={2}>
+            <Box mt={2} mb={2} />
+            {errorNotif && <p style={{ color: 'red' }}>{errorNotif}</p>}
+            <Box mt={2} mb={2} />
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              startIcon={
+                isSimulating ? (
+                  <CircularProgress size={15} color="inherit" />
+                ) : (
+                  <PlayArrowRoundedIcon />
+                )
+              }
+              disableElevation
+              disabled={!isReadyToSimulate || isSimulating}
+              onClick={() => launchSimulation()}
+            >
+              {buttonText}
+            </Button>
+            <Button
+              variant="text"
+              color="error"
+              size="small"
+              disableElevation
+              onClick={resetSimulation}
+              style={{ marginLeft: '5px' }}
+              disabled={isSimulating || !isReadyToSimulate} // Disable button when isSimulating is true or isReadyToSimulate is false
+            >
+              Reset
+            </Button>
+            {/* DISABLED
+            <Box mt={2} mb={2} />
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              disableElevation
+              startIcon={<StopRoundedIcon />}
+              disabled={!isSimulating}
+              onClick={stopSimulation}
+            >
+              Stop
+            </Button>
+            */}
+          </Box>
+          <Box mt={2} mb={2}>
+            {!isSimulating && simulationResults && !errorNotif && (
+              <PresentOutputs
+                results={simulationResults}
+                showFullOutputClicked={showFullOutputClicked}
+                setShowFullOutputClicked={setShowFullOutputClicked}
+              />
+            )}
+          </Box>
+          <Box mt={2} mb={2}>
+            {isSimulating ? (
+              <Box mt={2} mb={2}>
+                <Alert severity="info">
+                  Currently there is no option to pause or stop the simulation
+                  while running.
+                </Alert>
+                <Box mt={2} mb={2} />
+                <Alert severity="warning">
+                  Don&apos;t delete the newly created hidden sheet during
+                  simulation, that&apos;s where your output will be presented.
+                </Alert>
+              </Box>
+            ) : null}
+          </Box>
+        </Stack>
+      </Container>
+    </ThemeProvider>
   );
 };
 
