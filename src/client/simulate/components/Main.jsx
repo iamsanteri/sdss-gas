@@ -38,7 +38,7 @@ const Main = () => {
   const [notifMessage, setNotifMessage] = useState('');
   const [numSimulationRuns, setNumSimulationRuns] = useState(100);
   const [simulationResults, setSimulationResults] = useState(null);
-  const [isReadyToSimulate, setIsReadyToSimulate] = useState(true);
+  const [isReadyToSimulate, setIsReadyToSimulate] = useState(false);
   const [loadingDeleteState, setLoadingDeleteState] = useState(false);
   const [showFullOutputClicked, setShowFullOutputClicked] = useState(false);
 
@@ -312,12 +312,14 @@ const Main = () => {
           <Box
             display="flex"
             flexDirection="column"
-            alignItems="center"
+            alignItems="flex-start"
             p={1.3}
             marginTop={1.3}
           >
             <Box position="relative">
-              <Typography variant="h4">Simulate</Typography>
+              <Typography variant="h4" sx={{ ml: 10 }}>
+                Simulate
+              </Typography>
               <Typography
                 variant="caption"
                 sx={{
@@ -336,7 +338,7 @@ const Main = () => {
                 sx={{
                   position: 'absolute',
                   top: 20,
-                  right: 86,
+                  right: 100,
                 }}
               />
             )}
