@@ -131,7 +131,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
       </LoadingButton>
       <Button
         variant="text"
-        color="error"
+        color="secondary"
         size="small"
         disableElevation
         onClick={onHide}
