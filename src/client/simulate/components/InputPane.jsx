@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Box } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Button, Box, CircularProgress } from '@mui/material';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
@@ -118,17 +117,16 @@ const InputPane = ({ onHide, onAccept, appState }) => {
       <DistrSelection appState={appState} onInputChange={handleInputChange} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
       <Box mt={2} mb={2} />
-      <LoadingButton
+      <Button
         variant="text"
         color="primary"
         size="small"
         disableElevation
         type="submit"
         disabled={selectedCell === defaultCellValue}
-        loading={loadingState}
       >
-        Accept
-      </LoadingButton>
+        {loadingState ? <CircularProgress size={14} /> : 'Accept'}
+      </Button>
       <Button
         variant="text"
         color="secondary"
