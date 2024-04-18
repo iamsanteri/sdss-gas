@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Alert,
+  LinearProgress,
   List,
   ListItem,
   ListItemText,
@@ -18,7 +19,6 @@ import {
 } from '@mui/material';
 
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
-// DISABLED import StopRoundedIcon from '@mui/icons-material/StopRounded';
 
 import { Add, Delete } from '@mui/icons-material';
 
@@ -31,7 +31,7 @@ import PresentOutputs from './PresentOutputs';
 import { serverFunctions } from '../../utils/serverFunctions';
 
 const Main = () => {
-  // Top level state
+  // Top level application state
   const [appState, setAppState] = useState([]);
   const [errorNotif, setErrorNotif] = useState(null);
   const [activePane, setActivePane] = useState(null);
@@ -266,12 +266,6 @@ const Main = () => {
     serverFunctions.resetSimData();
   };
 
-  // DISABLED
-  // const stopSimulation = () => {
-  //   setIsSimulating(false);
-  //   serverFunctions.stopSimulation();
-  // };
-
   let buttonText;
   if (simulationResults) {
     buttonText = 'Re-simulate';
@@ -304,6 +298,15 @@ const Main = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <LinearProgress
+        sx={{
+          opacity: loadingDeleteState ? 1 : 0,
+          marginTop: '-0.6rem',
+          marginLeft: '-8px',
+          marginRight: '-8px',
+          width: 'calc(100% + 16px)',
+        }}
+      />
       <Notifications
         handleNotifClose={handleNotifClose}
         notifOpen={notifOpen}
@@ -316,7 +319,6 @@ const Main = () => {
             flexDirection="column"
             alignItems="flex-start"
             p={1.3}
-            marginTop={1.3}
           >
             <Box position="relative">
               <Typography variant="h4" sx={{ ml: 10 }}>
@@ -327,7 +329,7 @@ const Main = () => {
                 sx={{
                   position: 'absolute',
                   bottom: -5,
-                  right: -24,
+                  right: -22,
                 }}
               >
                 Beta
@@ -339,13 +341,13 @@ const Main = () => {
                 size={18}
                 sx={{
                   position: 'absolute',
-                  top: 20,
+                  top: 12,
                   right: 100,
                 }}
               />
             )}
           </Box>
-          <Box mt={2}>
+          <Box>
             <Box mb={1.5}>
               <Typography variant="h5" gutterBottom>
                 Input assumptions
