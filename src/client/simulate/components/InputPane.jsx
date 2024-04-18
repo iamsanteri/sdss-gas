@@ -80,7 +80,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
         // Add cases for other distribution types as above...
         default:
           validationError =
-            'Please select valid distribution and input parameters.';
+            'Please select a valid distribution and input parameters.';
       }
 
       if (validationError) {
