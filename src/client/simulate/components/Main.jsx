@@ -362,7 +362,7 @@ const Main = () => {
             <Box mt={1.5} mb={1.5}>
               <Typography variant="h5">Input assumptions</Typography>
               <Typography variant="body1">
-                Create your inputs here. Highlight the cell containing your
+                Create your input here. Highlight the cell containing your
                 uncertain value and choose relevant parameters.
               </Typography>
             </Box>
@@ -427,7 +427,7 @@ const Main = () => {
             <Box mb={1.5}>
               <Typography variant="h5">Output assumptions</Typography>
               <Typography variant="body1">
-                Mark your outputs here. Highlight the cell containing a formula
+                Mark your output here. Highlight the cell containing a formula
                 which is an output of interest in your model.
               </Typography>
             </Box>
