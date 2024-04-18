@@ -13,9 +13,7 @@ const NormalContinuous = ({ onInputChange }) => {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
-        Normal continuous
-      </Typography>
+      <Typography variant="h5">Normal continuous</Typography>
       <TextField
         type="number"
         size="small"

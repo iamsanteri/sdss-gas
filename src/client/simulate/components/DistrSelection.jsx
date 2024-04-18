@@ -79,7 +79,7 @@ const DistrSelection = ({ onInputChange }) => {
           />
         </Tooltip>
       </Tabs>
-      <Box mt={2}>
+      <Box mt={1.5}>
         {selectedDistr === 0 && (
           <UniformContinuous onInputChange={onInputChange} />
         )}
@@ -90,10 +90,15 @@ const DistrSelection = ({ onInputChange }) => {
           <NormalContinuous onInputChange={onInputChange} />
         )}
         {selectedDistr === 3 && (
-          <Typography variant="body1" sx={{ color: 'grey' }}>
-            <b>Coming soon:</b> Discrete variants and more distributions are
-            planned in the future.
-          </Typography>
+          <Box>
+            <Typography variant="h5" gutterBottom>
+              Coming soon
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'grey' }}>
+              Discrete variants and more distributions are planned in the
+              future.
+            </Typography>
+          </Box>
         )}
       </Box>
     </Box>

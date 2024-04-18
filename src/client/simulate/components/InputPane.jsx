@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Typography,
   Alert,
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -131,7 +132,11 @@ const InputPane = ({ onHide, onAccept, appState }) => {
             appState={appState}
             onInputChange={handleInputChange}
           />
-          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+          {errorMessage && (
+            <Box m={1}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Box>
+          )}
         </CardContent>
         <CardActions>
           <Button

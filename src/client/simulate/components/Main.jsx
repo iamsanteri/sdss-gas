@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Alert,
+  Divider,
   LinearProgress,
   List,
   ListItem,
@@ -16,6 +17,7 @@ import {
   CircularProgress,
   IconButton,
   Typography,
+  Tooltip,
 } from '@mui/material';
 
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
@@ -290,9 +292,8 @@ const Main = () => {
       if (Array.isArray(data)) {
         setAppState(data);
       } else {
-        console.error(
-          'loadSimData did not return an array. Setting it now',
-          data
+        setErrorNotif(
+          `loadSimData did not return an array. Setting it now ${data}`
         );
         setAppState([]); // Set appState to an empty array as a fallback
       }
@@ -350,8 +351,15 @@ const Main = () => {
               />
             )}
           </Box>
+          <Divider
+            sx={{
+              marginLeft: '-8px',
+              marginRight: '-8px',
+              width: 'calc(100% + 16px)',
+            }}
+          />
           <Box>
-            <Box mb={1.5}>
+            <Box mt={1.5} mb={1.5}>
               <Typography variant="h5">Input assumptions</Typography>
               <Typography variant="body1">
                 Create your inputs here. Highlight the cell containing your
@@ -415,7 +423,7 @@ const Main = () => {
               })}
             </List>
           </Box>
-          <Box mt={2}>
+          <Box>
             <Box mb={1.5}>
               <Typography variant="h5">Output assumptions</Typography>
               <Typography variant="body1">
@@ -480,34 +488,43 @@ const Main = () => {
               })}
             </List>
           </Box>
-          <Box mt={2} mb={2}>
+          <Box>
             <SimulationSettings
               numSimulationRuns={numSimulationRuns}
               setNumSimulationRuns={setNumSimulationRuns}
               isSimulating={isSimulating}
             />
           </Box>
-          <Box mt={2} mb={2}>
-            <Box mt={2} mb={2} />
-            {errorNotif && <p style={{ color: 'red' }}>{errorNotif}</p>}
-            <Box mt={2} mb={2} />
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              startIcon={
-                isSimulating ? (
-                  <CircularProgress size={15} color="inherit" />
-                ) : (
-                  <PlayArrowRoundedIcon />
-                )
-              }
-              disableElevation
-              disabled={!isReadyToSimulate || isSimulating}
-              onClick={() => launchSimulation()}
+          <Box mt={2}>
+            {errorNotif && (
+              <Box m={2}>
+                <Alert severity="error">{errorNotif}</Alert>
+              </Box>
+            )}
+            <Tooltip
+              title="Input some data to start a simulation"
+              disableHoverListener={isReadyToSimulate}
             >
-              {buttonText}
-            </Button>
+              <span>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  startIcon={
+                    isSimulating ? (
+                      <CircularProgress size={15} color="inherit" />
+                    ) : (
+                      <PlayArrowRoundedIcon />
+                    )
+                  }
+                  disableElevation
+                  disabled={!isReadyToSimulate || isSimulating}
+                  onClick={() => launchSimulation()}
+                >
+                  {buttonText}
+                </Button>
+              </span>
+            </Tooltip>
             <Button
               variant="text"
               color="error"
@@ -515,21 +532,21 @@ const Main = () => {
               disableElevation
               onClick={resetSimulation}
               style={{ marginLeft: '5px' }}
-              disabled={isSimulating || !isReadyToSimulate} // Disable button when isSimulating is true or isReadyToSimulate is false
+              disabled={isSimulating || !isReadyToSimulate}
             >
               Reset
             </Button>
           </Box>
-          <Box mt={2} mb={2}>
-            {!isSimulating && simulationResults && !errorNotif && (
+          {!isSimulating && simulationResults && !errorNotif && (
+            <Box>
               <PresentOutputs
                 results={simulationResults}
                 showFullOutputClicked={showFullOutputClicked}
                 setShowFullOutputClicked={setShowFullOutputClicked}
               />
-            )}
-          </Box>
-          <Box mt={2} mb={2}>
+            </Box>
+          )}
+          <Box>
             {isSimulating ? (
               <Box mt={2} mb={2}>
                 <Alert severity="info">

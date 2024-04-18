@@ -22,7 +22,7 @@ const PresentOutputs = ({
 
   return (
     <div>
-      <Box mt={2} mb={2}>
+      <Box>
         <Tabs
           value={selectedTab}
           onChange={handleChange}
@@ -51,8 +51,10 @@ const PresentOutputs = ({
       >
         Go to full output
       </Button>
-      <Box mt={2} mb={2}>
-        <Alert severity="info">Improved analytics are planned.</Alert>
+      <Box mt={1}>
+        <Alert severity="info">
+          Improved analytics are planned in the future.
+        </Alert>
       </Box>
     </div>
   );
