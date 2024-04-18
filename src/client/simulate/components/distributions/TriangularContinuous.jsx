@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@mui/material';
+import { TextField, Typography, Box, FormControl } from '@mui/material';
 
 const TriangularContinuous = ({ onInputChange }) => {
   const handleInputChange = (event) => {
@@ -12,30 +12,37 @@ const TriangularContinuous = ({ onInputChange }) => {
   };
 
   return (
-    <div className="distr-inputs">
-      <p>Triangular continuous</p>
-      <TextField
-        type="number"
-        size="small"
-        label="Min Value"
-        name="min"
-        onChange={handleInputChange}
-      />
-      <TextField
-        type="number"
-        size="small"
-        label="Mode Value"
-        name="mode"
-        onChange={handleInputChange}
-      />
-      <TextField
-        type="number"
-        size="small"
-        label="Max Value"
-        name="max"
-        onChange={handleInputChange}
-      />
-    </div>
+    <Box>
+      <Typography variant="h5" gutterBottom>
+        Triangular continuous
+      </Typography>
+      <FormControl>
+        <TextField
+          type="number"
+          size="small"
+          margin="dense"
+          label="Min value"
+          name="min"
+          onChange={handleInputChange}
+        />
+        <TextField
+          type="number"
+          size="small"
+          margin="dense"
+          label="Mode value"
+          name="mode"
+          onChange={handleInputChange}
+        />
+        <TextField
+          type="number"
+          size="small"
+          margin="dense"
+          label="Max value"
+          name="max"
+          onChange={handleInputChange}
+        />
+      </FormControl>
+    </Box>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@mui/material';
+import { TextField, Typography, Box } from '@mui/material';
 
 const NormalContinuous = ({ onInputChange }) => {
   const handleInputChange = (event) => {
@@ -12,11 +12,14 @@ const NormalContinuous = ({ onInputChange }) => {
   };
 
   return (
-    <div className="distr-inputs">
-      <p>Normal continuous</p>
+    <Box>
+      <Typography variant="h5" gutterBottom>
+        Normal continuous
+      </Typography>
       <TextField
         type="number"
         size="small"
+        margin="dense"
         label="Mean"
         name="mean"
         onChange={handleInputChange}
@@ -24,11 +27,12 @@ const NormalContinuous = ({ onInputChange }) => {
       <TextField
         type="number"
         size="small"
-        label="Std. Dev."
+        margin="dense"
+        label="Std. dev."
         name="stdDev"
         onChange={handleInputChange}
       />
-    </div>
+    </Box>
   );
 };
 

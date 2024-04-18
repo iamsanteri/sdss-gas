@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@mui/material';
+import { TextField, Typography, Box, FormControl } from '@mui/material';
 
 const UniformContinuous = ({ onInputChange }) => {
   const handleInputChange = (event) => {
@@ -12,23 +12,29 @@ const UniformContinuous = ({ onInputChange }) => {
   };
 
   return (
-    <div className="distr-inputs">
-      <p>Uniform continuous</p>
-      <TextField
-        type="number"
-        size="small"
-        label="Min Value"
-        name="min"
-        onChange={handleInputChange}
-      />
-      <TextField
-        type="number"
-        size="small"
-        label="Max Value"
-        name="max"
-        onChange={handleInputChange}
-      />
-    </div>
+    <Box>
+      <Typography variant="h5" gutterBottom>
+        Uniform continuous
+      </Typography>
+      <FormControl>
+        <TextField
+          type="number"
+          size="small"
+          margin="dense"
+          label="Min value"
+          name="min"
+          onChange={handleInputChange}
+        />
+        <TextField
+          type="number"
+          size="small"
+          margin="dense"
+          label="Max value"
+          name="max"
+          onChange={handleInputChange}
+        />
+      </FormControl>
+    </Box>
   );
 };
 

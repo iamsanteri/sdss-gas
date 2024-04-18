@@ -69,6 +69,9 @@ const Main = () => {
       h5: {
         fontSize: '0.95rem',
       },
+      h6: {
+        fontSize: '0.87rem',
+      },
       body1: {
         fontSize: '0.8rem',
         color: '#747678',
@@ -350,7 +353,7 @@ const Main = () => {
           <Box>
             <Box mb={1.5}>
               <Typography variant="h5">Input assumptions</Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1">
                 Create your inputs here. Highlight the cell containing your
                 uncertain value and choose relevant parameters.
               </Typography>
@@ -362,7 +365,6 @@ const Main = () => {
                 loading="true"
                 size="small"
                 startIcon={<Add />}
-                disableElevation
                 onClick={() => showInputPane()}
                 disabled={isSimulating}
               >
@@ -416,7 +418,7 @@ const Main = () => {
           <Box mt={2}>
             <Box mb={1.5}>
               <Typography variant="h5">Output assumptions</Typography>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1">
                 Mark your outputs here. Highlight the cell containing a formula
                 which is an output of interest in your model.
               </Typography>
@@ -428,7 +430,6 @@ const Main = () => {
                 loading="true"
                 size="small"
                 startIcon={<Add />}
-                disableElevation
                 onClick={() => showOutputPane()}
                 disabled={isSimulating}
               >
@@ -518,20 +519,6 @@ const Main = () => {
             >
               Reset
             </Button>
-            {/* DISABLED
-            <Box mt={2} mb={2} />
-            <Button
-              variant="contained"
-              color="secondary"
-              size="small"
-              disableElevation
-              startIcon={<StopRoundedIcon />}
-              disabled={!isSimulating}
-              onClick={stopSimulation}
-            >
-              Stop
-            </Button>
-            */}
           </Box>
           <Box mt={2} mb={2}>
             {!isSimulating && simulationResults && !errorNotif && (

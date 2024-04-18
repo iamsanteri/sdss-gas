@@ -6,7 +6,7 @@ export const validateUniformContinuous = (min, max) => {
   } else if (Number.isNaN(Number(min)) || Number.isNaN(Number(max))) {
     errorMessage = 'Both fields must be valid numbers';
   } else if (Number(min) >= Number(max)) {
-    errorMessage = 'Min value must be smaller than Max value';
+    errorMessage = 'Min must be smaller than Max';
   }
 
   return errorMessage;
@@ -24,9 +24,9 @@ export const validateTriangularContinuous = (min, mode, max) => {
   ) {
     errorMessage = 'All fields must be valid numbers';
   } else if (Number(min) >= Number(mode)) {
-    errorMessage = 'Min value must be smaller than Mode value';
+    errorMessage = 'Min must be smaller than Mode';
   } else if (Number(mode) >= Number(max)) {
-    errorMessage = 'Mode value must be smaller than Max value';
+    errorMessage = 'Mode must be smaller than Max';
   }
 
   return errorMessage;

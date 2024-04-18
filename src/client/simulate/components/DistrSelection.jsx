@@ -16,7 +16,7 @@ const DistrSelection = ({ onInputChange }) => {
   };
 
   return (
-    <div className="tabs-icons">
+    <Box>
       <Tabs
         value={selectedDistr}
         onChange={handleDistrChange}
@@ -91,11 +91,12 @@ const DistrSelection = ({ onInputChange }) => {
         )}
         {selectedDistr === 3 && (
           <Typography variant="body1" sx={{ color: 'grey' }}>
-            More distributions and discrete variants are planned in the future.
+            <b>Coming soon:</b> Discrete variants and more distributions are
+            planned in the future.
           </Typography>
         )}
       </Box>
-    </div>
+    </Box>
   );
 };
 

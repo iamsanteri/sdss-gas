@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Box, CircularProgress } from '@mui/material';
+
+import {
+  Button,
+  CircularProgress,
+  Typography,
+  Alert,
+  Card,
+  CardActions,
+  CardContent,
+} from '@mui/material';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
@@ -113,29 +122,39 @@ const InputPane = ({ onHide, onAccept, appState }) => {
 
   return (
     <form onSubmit={acceptInput}>
-      <p>Selection: {loadingState ? finalSelectedCell : selectedCell}</p>
-      <DistrSelection appState={appState} onInputChange={handleInputChange} />
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}{' '}
-      <Box mt={2} mb={2} />
-      <Button
-        variant="text"
-        color="primary"
-        size="small"
-        disableElevation
-        type="submit"
-        disabled={selectedCell === defaultCellValue}
-      >
-        {loadingState ? <CircularProgress size={14} /> : 'Accept'}
-      </Button>
-      <Button
-        variant="text"
-        color="secondary"
-        size="small"
-        disableElevation
-        onClick={onHide}
-      >
-        Cancel
-      </Button>
+      <Card>
+        <CardContent>
+          <Typography variant="h5">
+            Selection: {loadingState ? finalSelectedCell : selectedCell}
+          </Typography>
+          <DistrSelection
+            appState={appState}
+            onInputChange={handleInputChange}
+          />
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="text"
+            color="primary"
+            size="small"
+            disableElevation
+            type="submit"
+            disabled={selectedCell === defaultCellValue}
+          >
+            {loadingState ? <CircularProgress size={14} /> : 'Accept'}
+          </Button>
+          <Button
+            variant="text"
+            color="secondary"
+            size="small"
+            disableElevation
+            onClick={onHide}
+          >
+            Cancel
+          </Button>
+        </CardActions>
+      </Card>
     </form>
   );
 };
