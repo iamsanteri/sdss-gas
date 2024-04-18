@@ -111,10 +111,11 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
       </Button>
       <Button
         variant="text"
-        color="error"
+        color="secondary"
         size="small"
         disableElevation
         onClick={onHide}
+        sx={{ marginLeft: '0 !important' }}
       >
         Cancel
       </Button>

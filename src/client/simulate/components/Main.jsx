@@ -54,10 +54,10 @@ const Main = () => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#4c915c',
+        main: '#2e7d32',
       },
       secondary: {
-        main: '#ed1111',
+        main: '#d32f2f',
       },
     },
     typography: {

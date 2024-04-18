@@ -155,6 +155,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
             size="small"
             disableElevation
             onClick={onHide}
+            sx={{ marginLeft: '0 !important' }}
           >
             Cancel
           </Button>
