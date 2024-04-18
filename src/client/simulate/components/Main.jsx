@@ -349,9 +349,7 @@ const Main = () => {
           </Box>
           <Box>
             <Box mb={1.5}>
-              <Typography variant="h5" gutterBottom>
-                Input assumptions
-              </Typography>
+              <Typography variant="h5">Input assumptions</Typography>
               <Typography variant="body1" gutterBottom>
                 Create your inputs here. Highlight the cell containing your
                 uncertain value and choose relevant parameters.
@@ -417,9 +415,7 @@ const Main = () => {
           </Box>
           <Box mt={2}>
             <Box mb={1.5}>
-              <Typography variant="h5" gutterBottom>
-                Output assumptions
-              </Typography>
+              <Typography variant="h5">Output assumptions</Typography>
               <Typography variant="body1" gutterBottom>
                 Mark your outputs here. Highlight the cell containing a formula
                 which is an output of interest in your model.

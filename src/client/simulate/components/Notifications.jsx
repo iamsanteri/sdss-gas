@@ -1,21 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Snackbar } from '@mui/material';
+import { Button, Snackbar, Alert } from '@mui/material';
 
 const Notifications = ({ handleNotifClose, notifOpen, notifMessage }) => {
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={notifOpen}
-      onClose={handleNotifClose}
-      message={notifMessage}
       autoHideDuration={4000}
       action={
-        <Button size="small" color="primary" onClick={handleNotifClose}>
+        <Button size="small" color="primary">
           CLOSE
         </Button>
       }
-    />
+    >
+      <Alert
+        severity="error"
+        variant="filled"
+        sx={{ width: '100%' }}
+        onClose={handleNotifClose}
+      >
+        {notifMessage}
+      </Alert>
+    </Snackbar>
   );
 };
 
