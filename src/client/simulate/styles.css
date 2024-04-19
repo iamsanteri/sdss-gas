@@ -1,1 +1,12 @@
-/* STYLES HERE */
+.selected-cell {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px; /* Adjust as needed */
+    height: 8px; /* Adjust as needed */
+    padding: 8px 10px;
+    margin-left: 4px;
+    background-color: rgba(46, 125, 50, 0.15);
+    color: #2e7d32;
+    border-radius: 5px;
+}

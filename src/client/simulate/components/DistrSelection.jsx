@@ -79,7 +79,7 @@ const DistrSelection = ({ onInputChange }) => {
           />
         </Tooltip>
       </Tabs>
-      <Box mt={1.5}>
+      <Box mt={2}>
         {selectedDistr === 0 && (
           <UniformContinuous onInputChange={onInputChange} />
         )}

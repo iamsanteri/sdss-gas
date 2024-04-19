@@ -359,7 +359,7 @@ const Main = () => {
             }}
           />
           <Box>
-            <Box mt={1.5} mb={1.5}>
+            <Box mt={2} mb={1.5}>
               <Typography variant="h5">Input assumptions</Typography>
               <Typography variant="body1">
                 Create your input here. Highlight the cell containing your
@@ -397,34 +397,37 @@ const Main = () => {
                   sheetName,
                 } = item;
                 return (
-                  <ListItem key={id}>
-                    <ListItemText
-                      primary={`${cellNotation} (${sheetName})`}
-                      secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
-                        Object.keys(additionalData).length > 0
-                          ? Object.entries(additionalData)
-                              .map(([key, value]) => `${key}: ${value}`)
-                              .join(', ')
-                          : 'Empty'
-                      }`}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={() => deleteVariable(id, sheetName)}
-                        disabled={loadingDeleteState}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                  <>
+                    <ListItem key={id}>
+                      <ListItemText
+                        primary={`${cellNotation} (${sheetName})`}
+                        secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
+                          Object.keys(additionalData).length > 0
+                            ? Object.entries(additionalData)
+                                .map(([key, value]) => `${key}: ${value}`)
+                                .join(', ')
+                            : 'Empty'
+                        }`}
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => deleteVariable(id, sheetName)}
+                          disabled={loadingDeleteState}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <Divider variant="middle" component="li" />
+                  </>
                 );
               })}
             </List>
           </Box>
           <Box>
-            <Box mb={1.5}>
+            <Box mt={1.5} mb={1.5}>
               <Typography variant="h5">Output assumptions</Typography>
               <Typography variant="body1">
                 Mark your output here. Highlight the cell containing a formula

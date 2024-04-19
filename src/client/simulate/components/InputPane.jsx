@@ -44,7 +44,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
           setSelectedCell(cell);
         })
         .catch((error) => {
-          console.log('Failed to get selected cell: ', error);
+          setErrorMessage(error);
         });
     }, 1000); // Poll every 1 second
 
@@ -115,7 +115,7 @@ const InputPane = ({ onHide, onAccept, appState }) => {
       );
       onHide();
     } catch (error) {
-      console.error('Error:', error);
+      setErrorMessage('Error:', error);
     } finally {
       setLoadingState(false);
     }
@@ -125,9 +125,14 @@ const InputPane = ({ onHide, onAccept, appState }) => {
     <form onSubmit={acceptInput}>
       <Card>
         <CardContent>
-          <Typography variant="h5">
-            Selection: {loadingState ? finalSelectedCell : selectedCell}
-          </Typography>
+          <Box mb={1.5}>
+            <Typography variant="h6">
+              Selection:{' '}
+              <span className="selected-cell">
+                {loadingState ? finalSelectedCell : selectedCell}
+              </span>
+            </Typography>
+          </Box>
           <DistrSelection
             appState={appState}
             onInputChange={handleInputChange}
