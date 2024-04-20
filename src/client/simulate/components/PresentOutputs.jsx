@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Tabs, Tab, Button, Box, Alert } from '@mui/material';
+import { Typography, Grid, Tabs, Tab, Button, Box } from '@mui/material';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
@@ -21,11 +21,12 @@ const PresentOutputs = ({
   };
 
   return (
-    <div>
-      <Box>
+    <Box className="result-presentation">
+      <Box ml={3} mr={3} mt={1} pt={1}>
         <Tabs
           value={selectedTab}
           onChange={handleChange}
+          variant="fullWidth"
           textColor="primary"
           indicatorColor="primary"
         >
@@ -36,27 +37,39 @@ const PresentOutputs = ({
         {results.map(
           (result, index) =>
             selectedTab === index && (
-              <div key={index}>
-                <p>Min: {Number(result.min.toFixed(2))}</p>
-                <p>Max: {Number(result.max.toFixed(2))}</p>
-                <p>Mean: {Number(result.mean.toFixed(2))}</p>
-              </div>
+              <Box key={index} mt={2} mb={1} p={1}>
+                <Grid container>
+                  <Grid item xs={5}>
+                    <Typography variant="h6" gutterBottom>
+                      Value range:
+                    </Typography>
+                    <Typography variant="h6">Mean:</Typography>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <Typography variant="h6" gutterBottom>
+                      {`${Number(result.min.toFixed(0))} – ${Number(
+                        result.max.toFixed(0)
+                      )}`}
+                    </Typography>
+                    <Typography variant="h6">
+                      {Number(result.mean.toFixed(0))}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Box>
             )
         )}
       </Box>
-      <Button
-        color="primary"
-        onClick={() => viewOutputs()}
-        disabled={showFullOutputClicked}
-      >
-        Go to full output
-      </Button>
-      <Box mt={1}>
-        <Alert severity="info">
-          Improved analytics are planned in the future.
-        </Alert>
+      <Box ml={3} mr={3} pb={2}>
+        <Button
+          color="primary"
+          onClick={() => viewOutputs()}
+          disabled={showFullOutputClicked}
+        >
+          Go to full output
+        </Button>
       </Box>
-    </div>
+    </Box>
   );
 };
 

@@ -185,8 +185,8 @@ const Main = () => {
 
       const note =
         varType === 'input'
-          ? 'Simulation: Input variable'
-          : 'Simulation: Output variable';
+          ? 'Input variable used for simulation'
+          : 'Output variable used for simulation';
 
       serverFunctions
         .setCellNote(cellNotation, note)
@@ -363,8 +363,8 @@ const Main = () => {
             <Box mt={2} mb={1.5}>
               <Typography variant="h5">Input assumptions</Typography>
               <Typography variant="body1">
-                Create your input here. Highlight the cell containing your
-                uncertain value and choose relevant parameters.
+                Create your input here. Highlight the cell which contains your
+                uncertain variable and choose relevant parameters.
               </Typography>
             </Box>
             {activePane !== 'input' && (
@@ -387,7 +387,7 @@ const Main = () => {
                 appState={appState}
               />
             )}
-            <Box mt={0.2}>
+            <Box mb={0.5} mt={0.2}>
               <List
                 sx={{
                   width: '100%',
@@ -398,8 +398,8 @@ const Main = () => {
                 {inputVariables.map((item) => {
                   const { id, cellNotation, additionalData, sheetName } = item;
                   return (
-                    <>
-                      <ListItem key={id} alignItems="flex-start">
+                    <React.Fragment key={id}>
+                      <ListItem alignItems="flex-start">
                         <ListItemText
                           primary={
                             <Typography
@@ -407,7 +407,7 @@ const Main = () => {
                               variant="h6"
                               color="text.primary"
                             >
-                              {`${cellNotation} → ${additionalData.distrName} distribution`}
+                              {`[ ${cellNotation} ] → ${additionalData.distrName} distribution`}
                             </Typography>
                           }
                           secondary={
@@ -443,18 +443,18 @@ const Main = () => {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <Divider variant="middle" component="li" />
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </List>
             </Box>
           </Box>
           <Box>
-            <Box mt={1.5} mb={1.5}>
-              <Typography variant="h5">Output assumptions</Typography>
+            <Box mt={0.5} mb={1.5}>
+              <Typography variant="h5">Forecast outputs</Typography>
               <Typography variant="body1">
-                Indicate your output here. The cell you highlight must contain a
-                formula you investigate as part of your overall model.
+                Indicate your output here. Highlight the formula cell you want
+                to investigate as part of your model.
               </Typography>
             </Box>
             {activePane !== 'output' && (
@@ -477,42 +477,47 @@ const Main = () => {
                 appState={appState}
               />
             )}
-            <List>
-              {outputVariables.map((item) => {
-                const {
-                  id,
-                  cellNotation,
-                  timestamp,
-                  type,
-                  additionalData,
-                  sheetName,
-                } = item;
-                return (
-                  <ListItem key={id}>
-                    <ListItemText
-                      primary={`${cellNotation} (${sheetName}): ${additionalData.name}`}
-                      secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
-                        Object.keys(additionalData).length > 0
-                          ? Object.entries(additionalData)
-                              .map(([key, value]) => `${key}: ${value}`)
-                              .join(', ')
-                          : 'Empty'
-                      }`}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={() => deleteVariable(id, sheetName)}
-                        disabled={loadingDeleteState}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                );
-              })}
-            </List>
+            <Box mb={0.5} mt={0.2}>
+              <List
+                sx={{
+                  width: '100%',
+                  maxWidth: 360,
+                  bgcolor: 'background.paper',
+                }}
+              >
+                {outputVariables.map((item) => {
+                  const { id, cellNotation, additionalData, sheetName } = item;
+                  return (
+                    <React.Fragment key={id}>
+                      <ListItem alignItems="flex-start">
+                        <ListItemText
+                          primary={
+                            <Typography
+                              component="span"
+                              variant="h6"
+                              color="text.primary"
+                            >
+                              {`${cellNotation}: ${additionalData.name}`}
+                            </Typography>
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => deleteVariable(id, sheetName)}
+                            disabled={loadingDeleteState}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" component="li" />
+                    </React.Fragment>
+                  );
+                })}
+              </List>
+            </Box>
           </Box>
           <Box>
             <SimulationSettings
@@ -569,7 +574,7 @@ const Main = () => {
             </Button>
           </Box>
           {!isSimulating && simulationResults && !errorNotif && (
-            <Box>
+            <Box mt={1}>
               <PresentOutputs
                 results={simulationResults}
                 showFullOutputClicked={showFullOutputClicked}

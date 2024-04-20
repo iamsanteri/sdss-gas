@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, TextField, Box, CircularProgress } from '@mui/material';
+import {
+  Typography,
+  Alert,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  TextField,
+  Box,
+  CircularProgress,
+} from '@mui/material';
 
 import { serverFunctions } from '../../utils/serverFunctions';
 
@@ -20,7 +30,7 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
           setSelectedCell(cell);
         })
         .catch((error) => {
-          console.log('Failed to get selected cell: ', error);
+          setErrorMessage(error);
         });
     }, 1000);
 
@@ -37,8 +47,11 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
     const formula = await serverFunctions.getCellFormula(selectedCell);
 
     if (!formula) {
-      setErrorMessage('Selected cell must contain a formula');
       setLoadingState(false);
+      setErrorMessage('Selected cell must contain a formula');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
       return;
     }
 
@@ -47,14 +60,20 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
       const additionalData = { formula, name };
 
       if (!name) {
-        setErrorMessage('Please choose a short name for your output');
         setLoadingState(false);
+        setErrorMessage('Please choose a short name for your output');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 3000);
         return;
       }
 
       if (name.length > 15) {
-        setErrorMessage('Name must be 15 characters or less');
         setLoadingState(false);
+        setErrorMessage('Name must be 15 characters or less');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 3000);
         return;
       }
 
@@ -66,14 +85,22 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
       );
 
       if (isCellInState) {
+        setLoadingState(false);
         setErrorMessage('This cell has already been chosen for simulation');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 3000);
         return;
       }
 
       await onAccept('output', additionalData, selectedCell, sheetName);
       onHide();
     } catch (error) {
-      console.error('Error:', error);
+      setLoadingState(false);
+      setErrorMessage('Error', error);
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
     } finally {
       setLoadingState(false);
     }
@@ -81,44 +108,57 @@ const OutputPane = ({ onHide, onAccept, appState }) => {
 
   return (
     <form
-      className="valuePane"
       onSubmit={(e) => {
         e.preventDefault();
         acceptOutput();
       }}
     >
-      <p>Selection: {loadingState ? finalSelectedCell : selectedCell}</p>
-      <div className="distr-outputs">
-        <TextField
-          type="text"
-          size="small"
-          label="Output name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <Box mt={2} mb={2} />
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <Button
-        variant="text"
-        color="primary"
-        size="small"
-        disableElevation
-        type="submit"
-        disabled={selectedCell === defaultCellValue}
-      >
-        {loadingState ? <CircularProgress size={14} /> : 'Accept'}
-      </Button>
-      <Button
-        variant="text"
-        color="secondary"
-        size="small"
-        disableElevation
-        onClick={onHide}
-        sx={{ marginLeft: '0 !important' }}
-      >
-        Cancel
-      </Button>
+      <Card>
+        <CardContent>
+          <Box mb={3}>
+            <Typography variant="h6">
+              Selection:{' '}
+              <span className="selected-cell">
+                {loadingState ? finalSelectedCell : selectedCell}
+              </span>
+            </Typography>
+          </Box>
+          <TextField
+            type="text"
+            size="small"
+            label="Output name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          {errorMessage && (
+            <Box mt={2}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Box>
+          )}
+        </CardContent>
+        <CardActions>
+          <Button
+            variant="text"
+            color="primary"
+            size="small"
+            disableElevation
+            type="submit"
+            disabled={selectedCell === defaultCellValue}
+          >
+            {loadingState ? <CircularProgress size={14} /> : 'Accept'}
+          </Button>
+          <Button
+            variant="text"
+            color="secondary"
+            size="small"
+            disableElevation
+            onClick={onHide}
+            sx={{ marginLeft: '0 !important' }}
+          >
+            Cancel
+          </Button>
+        </CardActions>
+      </Card>
     </form>
   );
 };

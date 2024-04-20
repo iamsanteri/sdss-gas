@@ -8,6 +8,7 @@ const Notifications = ({ handleNotifClose, notifOpen, notifMessage }) => {
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={notifOpen}
       autoHideDuration={4000}
+      onClose={handleNotifClose}
       action={
         <Button size="small" color="primary">
           CLOSE
