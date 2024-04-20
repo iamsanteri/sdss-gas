@@ -387,7 +387,7 @@ const Main = () => {
                 appState={appState}
               />
             )}
-            <Box mb={0.5} mt={0.2}>
+            <Box mb={0.5} mt={0.1}>
               <List
                 sx={{
                   width: '100%',
@@ -395,57 +395,85 @@ const Main = () => {
                   bgcolor: 'background.paper',
                 }}
               >
-                {inputVariables.map((item) => {
-                  const { id, cellNotation, additionalData, sheetName } = item;
-                  return (
-                    <React.Fragment key={id}>
-                      <ListItem alignItems="flex-start">
-                        <ListItemText
-                          primary={
-                            <Typography
-                              component="span"
-                              variant="h6"
-                              color="text.primary"
-                            >
-                              {`[ ${cellNotation} ] → ${additionalData.distrName} distribution`}
-                            </Typography>
-                          }
-                          secondary={
-                            <React.Fragment>
-                              <Typography component="span" variant="body1">
-                                {`${
-                                  Object.keys(additionalData).length > 0
-                                    ? Object.entries(additionalData)
-                                        .filter(
-                                          ([, value]) =>
-                                            !Number.isNaN(Number(value))
-                                        )
-                                        .map(
-                                          ([_key, value]) =>
-                                            `${_key}: ${Number(value)}`
-                                        )
-                                        .join(', ')
-                                    : 'Empty'
-                                }`}
-                              </Typography>
-                            </React.Fragment>
-                          }
-                        />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            onClick={() => deleteVariable(id, sheetName)}
-                            disabled={loadingDeleteState}
+                {inputVariables.length === 0 ? (
+                  <React.Fragment>
+                    <ListItem alignItems="flex-start">
+                      <ListItemText
+                        primary={
+                          <Typography
+                            component="span"
+                            variant="h6"
+                            color="text.secondary"
                           >
-                            <Delete />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <Divider variant="middle" component="li" />
-                    </React.Fragment>
-                  );
-                })}
+                            [ Add your first input variable above ]
+                          </Typography>
+                        }
+                        secondary={
+                          <React.Fragment>
+                            <Typography component="span" variant="body1">
+                              To start simulating, you will need at least one
+                              input and one output. Click create.
+                            </Typography>
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <Divider variant="middle" component="li" />
+                  </React.Fragment>
+                ) : (
+                  inputVariables.map((item) => {
+                    const { id, cellNotation, additionalData, sheetName } =
+                      item;
+                    return (
+                      <React.Fragment key={id}>
+                        <ListItem alignItems="flex-start">
+                          <ListItemText
+                            primary={
+                              <Typography
+                                component="span"
+                                variant="h6"
+                                color="text.primary"
+                              >
+                                {`[ ${cellNotation} ] → ${additionalData.distrName} distribution`}
+                              </Typography>
+                            }
+                            secondary={
+                              <React.Fragment>
+                                <Typography component="span" variant="body1">
+                                  {`${
+                                    Object.keys(additionalData).length > 0
+                                      ? Object.entries(additionalData)
+                                          .filter(
+                                            ([, value]) =>
+                                              !Number.isNaN(Number(value))
+                                          )
+                                          .map(
+                                            ([_key, value]) =>
+                                              `${_key}: ${Number(value)}`
+                                          )
+                                          .join(', ')
+                                      : 'Empty'
+                                  }`}
+                                </Typography>
+                              </React.Fragment>
+                            }
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              onClick={() => deleteVariable(id, sheetName)}
+                              disabled={loadingDeleteState}
+                            >
+                              <Delete />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                        <Divider variant="middle" component="li" />
+                      </React.Fragment>
+                    );
+                  })
+                )}
               </List>
             </Box>
           </Box>
@@ -485,37 +513,57 @@ const Main = () => {
                   bgcolor: 'background.paper',
                 }}
               >
-                {outputVariables.map((item) => {
-                  const { id, cellNotation, additionalData, sheetName } = item;
-                  return (
-                    <React.Fragment key={id}>
-                      <ListItem alignItems="flex-start">
-                        <ListItemText
-                          primary={
-                            <Typography
-                              component="span"
-                              variant="h6"
-                              color="text.primary"
-                            >
-                              {`${cellNotation}: ${additionalData.name}`}
-                            </Typography>
-                          }
-                        />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            onClick={() => deleteVariable(id, sheetName)}
-                            disabled={loadingDeleteState}
+                {outputVariables.length === 0 ? (
+                  <React.Fragment>
+                    <ListItem alignItems="flex-start">
+                      <ListItemText
+                        primary={
+                          <Typography
+                            component="span"
+                            variant="h6"
+                            color="text.secondary"
                           >
-                            <Delete />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      <Divider variant="middle" component="li" />
-                    </React.Fragment>
-                  );
-                })}
+                            [ Add your first output variable above ]
+                          </Typography>
+                        }
+                      />
+                    </ListItem>
+                    <Divider variant="middle" component="li" />
+                  </React.Fragment>
+                ) : (
+                  outputVariables.map((item) => {
+                    const { id, cellNotation, additionalData, sheetName } =
+                      item;
+                    return (
+                      <React.Fragment key={id}>
+                        <ListItem alignItems="flex-start">
+                          <ListItemText
+                            primary={
+                              <Typography
+                                component="span"
+                                variant="h6"
+                                color="text.primary"
+                              >
+                                {`${cellNotation}: ${additionalData.name}`}
+                              </Typography>
+                            }
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              onClick={() => deleteVariable(id, sheetName)}
+                              disabled={loadingDeleteState}
+                            >
+                              <Delete />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                        <Divider variant="middle" component="li" />
+                      </React.Fragment>
+                    );
+                  })
+                )}
               </List>
             </Box>
           </Box>
