@@ -47,7 +47,7 @@ const SimulationRunsSelector = ({
               <Typography variant="h6" style={{ fontSize: '0.85rem' }}>
                 Number of simulation runs
                 <IconButton aria-label="info">
-                  <Tooltip title="Simulation speed is limited by current compute and API limitations.">
+                  <Tooltip title="Simulation speed is limited by current compute and API limitations">
                     <InfoOutlinedIcon fontSize="small" color="action" />
                   </Tooltip>
                 </IconButton>
