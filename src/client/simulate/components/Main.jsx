@@ -411,8 +411,8 @@ const Main = () => {
                         secondary={
                           <React.Fragment>
                             <Typography component="span" variant="body1">
-                              To start simulating, you will need at least one
-                              input and one output. Click create.
+                              To start simulating, you will need to create at
+                              least one input and one output variable.
                             </Typography>
                           </React.Fragment>
                         }
