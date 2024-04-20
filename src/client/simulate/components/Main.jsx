@@ -412,7 +412,7 @@ const Main = () => {
                           <React.Fragment>
                             <Typography component="span" variant="body1">
                               To start simulating, you will need to create at
-                              least one input and one output variable.
+                              least one input and one output variable
                             </Typography>
                           </React.Fragment>
                         }
