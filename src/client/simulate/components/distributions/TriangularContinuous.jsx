@@ -14,7 +14,9 @@ const TriangularContinuous = ({ onInputChange }) => {
 
   return (
     <Box>
-      <Typography variant="h5">Triangular continuous</Typography>
+      <Typography variant="h5" gutterBottom>
+        Triangular continuous
+      </Typography>
       <FormControl>
         <TextField
           type="number"

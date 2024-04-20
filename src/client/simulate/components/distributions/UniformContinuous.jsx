@@ -14,7 +14,9 @@ const UniformContinuous = ({ onInputChange }) => {
 
   return (
     <Box>
-      <Typography variant="h5">Uniform continuous</Typography>
+      <Typography variant="h5" gutterBottom>
+        Uniform continuous
+      </Typography>
       <FormControl>
         <TextField
           type="number"
