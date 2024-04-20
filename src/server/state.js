@@ -12,7 +12,8 @@ Application state schema is being updated ongoingly, it's an array of objects:
     "additionalData": {
       "min": "1",
       "max": "10",
-      "distributionType": "uniformContinuous"
+      "distributionType": "uniformContinuous",
+      "distrName": "Uniform"
     }
   },
   {

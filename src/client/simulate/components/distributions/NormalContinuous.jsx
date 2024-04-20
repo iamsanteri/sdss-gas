@@ -8,6 +8,7 @@ const NormalContinuous = ({ onInputChange }) => {
       name: event.target.name,
       value: event.target.value,
       distributionType: 'normalContinuous',
+      distributionName: 'Normal',
     });
   };
 

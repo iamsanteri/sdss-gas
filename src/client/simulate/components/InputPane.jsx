@@ -26,14 +26,21 @@ const InputPane = ({ onHide, onAccept, appState }) => {
   const defaultCellValue = 'Getting cell...';
   const [selectedCell, setSelectedCell] = useState(defaultCellValue);
   const [selectedDistribution, setSelectedDistribution] = useState('');
+  const [distrName, setDistrName] = useState('');
   const [additionalData, setAdditionalData] = useState({});
   const [loadingState, setLoadingState] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [finalSelectedCell, setFinalSelectedCell] = useState(defaultCellValue);
 
-  const handleInputChange = ({ name, value, distributionType }) => {
+  const handleInputChange = ({
+    name,
+    value,
+    distributionType,
+    distributionName,
+  }) => {
     setAdditionalData((prevData) => ({ ...prevData, [name]: value }));
     setSelectedDistribution(distributionType);
+    setDistrName(distributionName);
   };
 
   useEffect(() => {
@@ -109,7 +116,11 @@ const InputPane = ({ onHide, onAccept, appState }) => {
 
       await onAccept(
         'input',
-        { ...additionalData, distributionType: selectedDistribution },
+        {
+          ...additionalData,
+          distributionType: selectedDistribution,
+          distrName,
+        },
         selectedCell,
         sheetName
       );

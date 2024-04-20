@@ -8,6 +8,7 @@ const UniformContinuous = ({ onInputChange }) => {
       name: event.target.name,
       value: event.target.value,
       distributionType: 'uniformContinuous',
+      distributionName: 'Uniform',
     });
   };
 

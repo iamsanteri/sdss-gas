@@ -159,7 +159,7 @@ const Main = () => {
         return Math.random().toString(36).substring(2, 7);
       }
 
-      const { distributionType } = additionalDataObj;
+      const { distributionType, distrName } = additionalDataObj;
 
       if (varType === 'input' && !distributionType) {
         setErrorNotif(
@@ -179,6 +179,7 @@ const Main = () => {
         additionalData: {
           ...additionalDataObj,
           distributionType,
+          distrName,
         },
       };
 
@@ -386,52 +387,74 @@ const Main = () => {
                 appState={appState}
               />
             )}
-            <List>
-              {inputVariables.map((item) => {
-                const {
-                  id,
-                  cellNotation,
-                  timestamp,
-                  type,
-                  additionalData,
-                  sheetName,
-                } = item;
-                return (
-                  <>
-                    <ListItem key={id}>
-                      <ListItemText
-                        primary={`${cellNotation} (${sheetName})`}
-                        secondary={`Timestamp: ${timestamp} - Type: ${type} - Additional data: ${
-                          Object.keys(additionalData).length > 0
-                            ? Object.entries(additionalData)
-                                .map(([key, value]) => `${key}: ${value}`)
-                                .join(', ')
-                            : 'Empty'
-                        }`}
-                      />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          onClick={() => deleteVariable(id, sheetName)}
-                          disabled={loadingDeleteState}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider variant="middle" component="li" />
-                  </>
-                );
-              })}
-            </List>
+            <Box mt={0.2}>
+              <List
+                sx={{
+                  width: '100%',
+                  maxWidth: 360,
+                  bgcolor: 'background.paper',
+                }}
+              >
+                {inputVariables.map((item) => {
+                  const { id, cellNotation, additionalData, sheetName } = item;
+                  return (
+                    <>
+                      <ListItem key={id} alignItems="flex-start">
+                        <ListItemText
+                          primary={
+                            <Typography
+                              component="span"
+                              variant="h6"
+                              color="text.primary"
+                            >
+                              {`${cellNotation} → ${additionalData.distrName} distribution`}
+                            </Typography>
+                          }
+                          secondary={
+                            <React.Fragment>
+                              <Typography component="span" variant="body1">
+                                {`${
+                                  Object.keys(additionalData).length > 0
+                                    ? Object.entries(additionalData)
+                                        .filter(
+                                          ([, value]) =>
+                                            !Number.isNaN(Number(value))
+                                        )
+                                        .map(
+                                          ([_key, value]) =>
+                                            `${_key}: ${Number(value)}`
+                                        )
+                                        .join(', ')
+                                    : 'Empty'
+                                }`}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => deleteVariable(id, sheetName)}
+                            disabled={loadingDeleteState}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <Divider variant="middle" component="li" />
+                    </>
+                  );
+                })}
+              </List>
+            </Box>
           </Box>
           <Box>
             <Box mt={1.5} mb={1.5}>
               <Typography variant="h5">Output assumptions</Typography>
               <Typography variant="body1">
-                Mark your output here. Highlight the cell containing a formula
-                which is an output of interest in your model.
+                Indicate your output here. The cell you highlight must contain a
+                formula you investigate as part of your overall model.
               </Typography>
             </Box>
             {activePane !== 'output' && (
@@ -508,7 +531,12 @@ const Main = () => {
               title="Input some data to start a simulation"
               disableHoverListener={isReadyToSimulate}
             >
-              <span>
+              <span
+                style={{
+                  cursor:
+                    !isReadyToSimulate || isSimulating ? 'not-allowed' : 'auto',
+                }}
+              >
                 <Button
                   variant="contained"
                   color="primary"
@@ -559,7 +587,7 @@ const Main = () => {
                 <Box mt={2} mb={2} />
                 <Alert severity="warning">
                   Don&apos;t delete the newly created hidden sheet during
-                  simulation, that&apos;s where your output will be presented.
+                  simulation, that&apos;s where your outputs will be presented.
                 </Alert>
               </Box>
             ) : null}

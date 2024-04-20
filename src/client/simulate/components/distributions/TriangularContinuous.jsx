@@ -8,6 +8,7 @@ const TriangularContinuous = ({ onInputChange }) => {
       name: event.target.name,
       value: event.target.value,
       distributionType: 'triangularContinuous',
+      distributionName: 'Triangular',
     });
   };
 

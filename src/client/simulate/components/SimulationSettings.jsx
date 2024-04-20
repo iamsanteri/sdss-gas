@@ -37,17 +37,21 @@ const SimulationRunsSelector = ({
           aria-controls="additional-settings-content"
           id="additional-settings-header"
         >
-          <Typography>Simulation settings</Typography>
+          <Typography variant="h5" style={{ fontSize: '0.9rem' }}>
+            Simulation settings
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <FormControl component="fieldset" size="small">
             <label>
-              Number of simulation runs
-              <IconButton aria-label="info">
-                <Tooltip title="Simulation speed is limited by current compute and API limitations.">
-                  <InfoOutlinedIcon fontSize="small" color="action" />
-                </Tooltip>
-              </IconButton>
+              <Typography variant="h6" style={{ fontSize: '0.85rem' }}>
+                Number of simulation runs
+                <IconButton aria-label="info">
+                  <Tooltip title="Simulation speed is limited by current compute and API limitations.">
+                    <InfoOutlinedIcon fontSize="small" color="action" />
+                  </Tooltip>
+                </IconButton>
+              </Typography>
             </label>
             <RadioGroup
               aria-label="simulationRuns"
@@ -98,14 +102,16 @@ const SimulationRunsSelector = ({
             </div>
           </Tooltip>
           <Box mt={2} mb={2} />
-          <div style={{ cursor: 'not-allowed' }}>
+          <div>
             <FormControlLabel
               control={<Switch disabled />}
               label="Include sensitivity analysis"
+              style={{ cursor: 'not-allowed' }}
             />
             <FormControlLabel
               control={<Switch disabled />}
               label="Include detailed analytics"
+              style={{ cursor: 'not-allowed' }}
             />
           </div>
         </AccordionDetails>
