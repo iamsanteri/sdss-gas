@@ -405,7 +405,7 @@ const Main = () => {
                             variant="h6"
                             color="text.secondary"
                           >
-                            [ Add your input variables above ]
+                            [ Add your input variables here ]
                           </Typography>
                         }
                         secondary={
@@ -523,7 +523,7 @@ const Main = () => {
                             variant="h6"
                             color="text.secondary"
                           >
-                            [ Add your output variables above ]
+                            [ Add your output variables here ]
                           </Typography>
                         }
                       />
