@@ -364,7 +364,7 @@ const Main = () => {
               <Typography variant="h5">Input assumptions</Typography>
               <Typography variant="body1">
                 Create your input here. Highlight the cell which contains your
-                uncertain variable and choose relevant parameters.
+                uncertain variable and choose your parameters.
               </Typography>
             </Box>
             {activePane !== 'input' && (
@@ -533,7 +533,7 @@ const Main = () => {
               </Box>
             )}
             <Tooltip
-              title="Input some data to start a simulation"
+              title="Input at least one input and one output to start a simulation"
               disableHoverListener={isReadyToSimulate}
             >
               <span
