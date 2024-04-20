@@ -526,7 +526,7 @@ const Main = () => {
               isSimulating={isSimulating}
             />
           </Box>
-          <Box mt={2}>
+          <Box mt={3}>
             {errorNotif && (
               <Box m={2}>
                 <Alert severity="error">{errorNotif}</Alert>

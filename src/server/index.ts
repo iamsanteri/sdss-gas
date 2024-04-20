@@ -1,10 +1,7 @@
 // UI SETUP
 import {
   onOpen,
-  openDialog,
   openDialogMUI,
-  openDialogBootstrap,
-  openDialogTailwindCSS,
   openSimulate,
 } from './ui';
 
@@ -42,10 +39,7 @@ import {
 // PUBLIC FUNCTIONS MUST BE EXPORTED AS NAMED EXPORTS
 export {
   onOpen,
-  openDialog,
-  openDialogBootstrap,
   openDialogMUI,
-  openDialogTailwindCSS,
   openSimulate,
   getSheetsData,
   addSheet,
