@@ -363,7 +363,7 @@ const Main = () => {
             <Box mt={2} mb={1.5}>
               <Typography variant="h5">Input assumptions</Typography>
               <Typography variant="body1">
-                Create your input here. Highlight the cell which contains your
+                Create your input here. Highlight the cell containing your
                 uncertain variable and choose your parameters.
               </Typography>
             </Box>
