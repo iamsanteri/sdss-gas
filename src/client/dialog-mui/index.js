@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SheetEditor from './components/SheetEditor';
+import Dialog from './components/Dialog';
 
 import './styles.css';
 
-ReactDOM.render(<SheetEditor />, document.getElementById('index'));
+ReactDOM.render(<Dialog />, document.getElementById('index'));

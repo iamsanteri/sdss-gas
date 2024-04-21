@@ -11,7 +11,7 @@ export const openDialogMUI = () => {
   const html = HtmlService.createHtmlOutputFromFile('dialog-mui')
     .setWidth(600)
     .setHeight(600);
-  SpreadsheetApp.getUi().showModalDialog(html, 'Sheet Editor (MUI)');
+  SpreadsheetApp.getUi().showModalDialog(html, 'Dialog (MUI)');
 };
 
 export const openSimulate = () => {
