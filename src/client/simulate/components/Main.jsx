@@ -235,18 +235,21 @@ const Main = () => {
 
   const launchSimulation = () => {
     setIsSimulating(true);
+    setLoadingDeleteState(true);
     setErrorNotif(null);
     serverFunctions
       .runSimulation(appState, numSimulationRuns)
       .then((resolvedStats) => {
         setIsSimulating(false);
         setShowFullOutputClicked(false);
+        setLoadingDeleteState(false);
         setSimulationResults(resolvedStats.statistics);
       })
       .catch((error) => {
         const message = `Simulation ran into issues - Try to re-run. ${error}`;
         setErrorNotif(message);
         setIsSimulating(false);
+        setLoadingDeleteState(false);
       });
   };
 
@@ -405,7 +408,7 @@ const Main = () => {
                             variant="h6"
                             color="text.secondary"
                           >
-                            [ Add your input variables here ]
+                            [ Your first input will appear here ]
                           </Typography>
                         }
                         secondary={
@@ -478,7 +481,7 @@ const Main = () => {
             </Box>
           </Box>
           <Box>
-            <Box mt={0.5} mb={1.5}>
+            <Box mt={1} mb={1.5}>
               <Typography variant="h5">Forecast outputs</Typography>
               <Typography variant="body1">
                 Indicate your output here. Highlight the formula cell you want
@@ -523,7 +526,7 @@ const Main = () => {
                             variant="h6"
                             color="text.secondary"
                           >
-                            [ Add your output variables here ]
+                            [ Your first output will appear here ]
                           </Typography>
                         }
                       />
@@ -567,7 +570,7 @@ const Main = () => {
               </List>
             </Box>
           </Box>
-          <Box>
+          <Box mt={0.8}>
             <SimulationSettings
               numSimulationRuns={numSimulationRuns}
               setNumSimulationRuns={setNumSimulationRuns}
@@ -622,7 +625,7 @@ const Main = () => {
             </Button>
           </Box>
           {!isSimulating && simulationResults && !errorNotif && (
-            <Box mt={1}>
+            <Box mt={1.5}>
               <PresentOutputs
                 results={simulationResults}
                 showFullOutputClicked={showFullOutputClicked}
