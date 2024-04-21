@@ -47,17 +47,18 @@ const devDialogEntry = './dev/index.js';
 // define client entry points and output names
 const clientEntrypoints = [
   {
-    name: 'CLIENT - Dialog MUI',
-    entry: './src/client/dialog-mui/index.js',
-    filename: 'dialog-mui',
-    template: './src/client/dialog-mui/index.html',
-  },
-  {
     name: 'CLIENT - Simulate',
     entry: './src/client/simulate/index.js',
     filename: 'simulate',
     template: './src/client/simulate/index.html',
   },
+  // COMMENTED OUT FOR NOW
+  // {
+  //   name: 'CLIENT - Dialog MUI',
+  //   entry: './src/client/dialog-mui/index.js',
+  //   filename: 'dialog-mui',
+  //   template: './src/client/dialog-mui/index.html',
+  // },
 ];
 
 // define certificate locations

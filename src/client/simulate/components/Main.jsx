@@ -630,7 +630,7 @@ const Main = () => {
               />
             </Box>
           )}
-          <Box>
+          <Box mb={3}>
             {isSimulating ? (
               <Box mt={2} mb={2}>
                 <Alert severity="info">

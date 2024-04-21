@@ -1,8 +1,8 @@
 // UI SETUP
 import {
   onOpen,
-  openDialogMUI,
   openSimulate,
+  // openDialogMUI, COMMENTED OUT FOR NOW
 } from './ui';
 
 // STATE PERSISTENCE
@@ -39,7 +39,7 @@ import {
 // PUBLIC FUNCTIONS MUST BE EXPORTED AS NAMED EXPORTS
 export {
   onOpen,
-  openDialogMUI,
+  // openDialogMUI, COMMENTED OUT FOR NOW
   openSimulate,
   getSheetsData,
   addSheet,
