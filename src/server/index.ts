@@ -1,5 +1,6 @@
 // UI SETUP
 import {
+  onInstall,
   onOpen,
   openSimulate,
   // openDialogMUI, COMMENTED OUT FOR NOW
@@ -38,6 +39,7 @@ import {
 
 // PUBLIC FUNCTIONS MUST BE EXPORTED AS NAMED EXPORTS
 export {
+  onInstall,
   onOpen,
   // openDialogMUI, COMMENTED OUT FOR NOW
   openSimulate,
