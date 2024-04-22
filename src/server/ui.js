@@ -20,7 +20,7 @@ export const onInstall = () => {
 
 export const openSimulate = () => {
   const html = HtmlService.createHtmlOutputFromFile('simulate').setTitle(
-    'Simulate DSS (Beta)'
+    'Simulation DSS (Beta)'
   );
   SpreadsheetApp.getUi().showSidebar(html);
 };
