@@ -19,8 +19,9 @@ export const onInstall = () => {
 // };
 
 export const openSimulate = () => {
-  const html = HtmlService.createHtmlOutputFromFile('simulate').setTitle(
-    'Simulation DSS (Beta)'
-  );
+  const html =
+    HtmlService.createHtmlOutputFromFile('simulate').setTitle(
+      'Simulate (Beta)'
+    );
   SpreadsheetApp.getUi().showSidebar(html);
 };
