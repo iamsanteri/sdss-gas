@@ -7,6 +7,10 @@ export const onOpen = () => {
   menu.addToUi();
 };
 
+export const onInstall = () => {
+  onOpen();
+};
+
 // export const openDialogMUI = () => {
 //   const html = HtmlService.createHtmlOutputFromFile('dialog-mui')
 //     .setWidth(600)
