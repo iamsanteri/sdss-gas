@@ -20,6 +20,18 @@
 
 ---
 
+## Apps script process deployment and versioning process
+
+This build env deploys to sdss-gas project in the browser based apps script console under alexander.liukkonen@gmail.com
+
+After the release version is ready and tested, it is moved over to Simulate apps script project with a simple copy-paste.
+
+The deployments and production versioning is then handled under the separate Simulate project directory.
+
+## Updating an already live published apps script add-on
+
+Guide from current docs: https://developers.google.com/workspace/add-ons/how-tos/update-published-add-on
+
 ## Increase Node heap size
 
 ```export NODE_OPTIONS="--max-old-space-size=8192"```
