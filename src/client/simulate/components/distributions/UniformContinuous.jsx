@@ -4,9 +4,10 @@ import { TextField, Typography, Box, FormControl } from '@mui/material';
 
 const UniformContinuous = ({ onInputChange }) => {
   const handleInputChange = (event) => {
+    const value = event.target.value.replace(',', '.');
     onInputChange({
       name: event.target.name,
-      value: event.target.value,
+      value: parseFloat(value),
       distributionType: 'uniformContinuous',
       distributionName: 'Uniform',
     });
@@ -19,19 +20,21 @@ const UniformContinuous = ({ onInputChange }) => {
       </Typography>
       <FormControl>
         <TextField
-          type="number"
-          size="small"
-          margin="dense"
-          label="Min value"
-          name="min"
-          onChange={handleInputChange}
-        />
-        <TextField
-          type="number"
+          type="text"
           size="small"
           margin="dense"
           label="Max value"
           name="max"
+          inputProps={{ step: '0.00001' }}
+          onChange={handleInputChange}
+        />
+        <TextField
+          type="text"
+          size="small"
+          margin="dense"
+          label="Min value"
+          name="min"
+          inputProps={{ step: '0.00001' }}
           onChange={handleInputChange}
         />
       </FormControl>

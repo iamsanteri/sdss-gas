@@ -6,7 +6,7 @@ import { normalDistribution } from './distributions/normalContinuous';
   For server-side add new imported distributions here */
 
 // Define the number of decimals used in simulation for both inputs and outputs
-const settingDecimals = 4;
+const settingDecimals = 5;
 const nameOfHiddenSheet = 'HiddenSimulationSheet'; // Remember to define also in sheets.js
 
 function sampleFromDistribution(distributionType, additionalData) {
@@ -14,21 +14,21 @@ function sampleFromDistribution(distributionType, additionalData) {
   switch (distributionType) {
     case 'uniformContinuous':
       singleDraw = uniformDistribution(
-        Number(additionalData.min),
-        Number(additionalData.max)
+        parseFloat(additionalData.min),
+        parseFloat(additionalData.max)
       );
       break;
     case 'triangularContinuous':
       singleDraw = triangularDistribution(
-        Number(additionalData.min),
-        Number(additionalData.mode),
-        Number(additionalData.max)
+        parseFloat(additionalData.min),
+        parseFloat(additionalData.mode),
+        parseFloat(additionalData.max)
       );
       break;
     case 'normalContinuous':
       singleDraw = normalDistribution(
-        Number(additionalData.mean),
-        Number(additionalData.stdDev)
+        parseFloat(additionalData.mean),
+        parseFloat(additionalData.stdDev)
       );
       break;
     default:

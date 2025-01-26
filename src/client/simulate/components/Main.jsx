@@ -390,7 +390,7 @@ const Main = () => {
                 appState={appState}
               />
             )}
-            <Box mb={0.5} mt={0.1}>
+            <Box mb={0.5} mt={0.2}>
               <List
                 sx={{
                   width: '100%',

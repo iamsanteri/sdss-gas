@@ -47,12 +47,12 @@ const PresentOutputs = ({
                   </Grid>
                   <Grid item xs={7}>
                     <Typography variant="h6" gutterBottom>
-                      {`${Number(result.min.toFixed(0))} – ${Number(
-                        result.max.toFixed(0)
+                      {`${Number(result.min.toFixed(2))} – ${Number(
+                        result.max.toFixed(2)
                       )}`}
                     </Typography>
                     <Typography variant="h6">
-                      {Number(result.mean.toFixed(0))}
+                      {Number(result.mean.toFixed(2))}
                     </Typography>
                   </Grid>
                 </Grid>

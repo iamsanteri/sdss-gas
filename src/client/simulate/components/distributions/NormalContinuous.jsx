@@ -4,9 +4,10 @@ import { TextField, Typography, Box } from '@mui/material';
 
 const NormalContinuous = ({ onInputChange }) => {
   const handleInputChange = (event) => {
+    const value = event.target.value.replace(',', '.');
     onInputChange({
       name: event.target.name,
-      value: event.target.value,
+      value: parseFloat(value),
       distributionType: 'normalContinuous',
       distributionName: 'Normal',
     });
@@ -18,19 +19,21 @@ const NormalContinuous = ({ onInputChange }) => {
         Normal continuous
       </Typography>
       <TextField
-        type="number"
+        type="text"
         size="small"
         margin="dense"
         label="Mean"
         name="mean"
+        inputProps={{ step: '0.00001' }}
         onChange={handleInputChange}
       />
       <TextField
-        type="number"
+        type="text"
         size="small"
         margin="dense"
         label="Std. dev."
         name="stdDev"
+        inputProps={{ step: '0.00001' }}
         onChange={handleInputChange}
       />
     </Box>

@@ -71,17 +71,27 @@ const InputPane = ({ onHide, onAccept, appState }) => {
       switch (selectedDistribution) {
         case 'uniformContinuous': {
           const { min, max } = additionalData;
-          validationError = validateUniformContinuous(min, max);
+          validationError = validateUniformContinuous(
+            parseFloat(min),
+            parseFloat(max)
+          );
           break;
         }
         case 'triangularContinuous': {
           const { min, mode, max } = additionalData;
-          validationError = validateTriangularContinuous(min, mode, max);
+          validationError = validateTriangularContinuous(
+            parseFloat(min),
+            parseFloat(mode),
+            parseFloat(max)
+          );
           break;
         }
         case 'normalContinuous': {
           const { mean, stdDev } = additionalData;
-          validationError = validateNormalContinuous(mean, stdDev);
+          validationError = validateNormalContinuous(
+            parseFloat(mean),
+            parseFloat(stdDev)
+          );
           break;
         }
         // Add cases for other distribution types as above...
