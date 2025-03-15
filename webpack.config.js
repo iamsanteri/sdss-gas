@@ -189,14 +189,14 @@ const DynamicCdnWebpackPluginConfig = {
           name: packageName,
           var: 'ReactTransitionGroup',
           version: packageVersion,
-          url: `https://unpkg.com/react-transition-group@${packageVersion}/dist/react-transition-group${packageSuffix}`,
+          url: `https://cdn.jsdelivr.net/npm/react-transition-group@${packageVersion}/dist/react-transition-group${packageSuffix}`,
         };
       case '@mui/material':
         return {
           name: packageName,
           var: 'MaterialUI',
           version: packageVersion,
-          url: `https://unpkg.com/@mui/material@${packageVersion}/umd/material-ui.${
+          url: `https://cdn.jsdelivr.net/npm/@mui/material@${packageVersion}/umd/material-ui.${
             isProd ? 'production.min.js' : 'development.js'
           }`,
         };
@@ -205,14 +205,14 @@ const DynamicCdnWebpackPluginConfig = {
           name: packageName,
           var: 'emotionReact',
           version: packageVersion,
-          url: `https://unpkg.com/@emotion/react@${packageVersion}/dist/emotion-react.umd.min.js`,
+          url: `https://cdn.jsdelivr.net/npm/@emotion/react@${packageVersion}/dist/emotion-react.umd.min.js`,
         };
       case '@emotion/styled':
         return {
           name: packageName,
           var: 'emotionStyled',
           version: packageVersion,
-          url: `https://unpkg.com/@emotion/styled@${packageVersion}/dist/emotion-styled.umd.min.js`,
+          url: `https://cdn.jsdelivr.net/npm/@emotion/styled@${packageVersion}/dist/emotion-styled.umd.min.js`,
         };
       // externalize gas-client to keep bundle size even smaller
       case 'gas-client':
@@ -220,7 +220,7 @@ const DynamicCdnWebpackPluginConfig = {
           name: packageName,
           var: 'GASClient',
           version: packageVersion,
-          url: `https://unpkg.com/gas-client@${packageVersion}/dist/index.js`,
+          url: `https://cdn.jsdelivr.net/npm/gas-client@${packageVersion}/dist/index.js`,
         };
       // must include peer dependencies for any custom imports
       case '@types/react':
@@ -228,7 +228,7 @@ const DynamicCdnWebpackPluginConfig = {
           name: packageName,
           var: '@types/react',
           version: packageVersion,
-          url: `https://unpkg.com/@types/react@${packageVersion}/index.d.ts`,
+          url: `https://cdn.jsdelivr.net/npm/@types/react@${packageVersion}/index.d.ts`,
         };
       // return defaults/null depending if Dynamic CDN plugin finds package
       default:
